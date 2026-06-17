@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InclúyeT – Empleo inclusivo</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800;900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <!-- Bootstrap CSS 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link href="css/styles.css" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ─── Accessibility Bar (always visible, fixed top 40px) ─────────── -->
+  <div id="a11y-bar" role="toolbar" aria-label="Barra de accesibilidad">
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+    <span class="a11y-label d-none d-sm-inline">Accesibilidad</span>
+
+    <div class="d-flex align-items-center gap-1">
+      <span style="font-size:0.7rem;opacity:0.75;margin-right:4px;" class="d-none d-sm-inline">Tamaño:</span>
+      <button onclick="decreaseFontSize()" class="a11y-btn" aria-label="Reducir tamaño de texto" title="Reducir texto">
+        <i class="bi bi-zoom-out"></i>
+      </button>
+      <span id="font-size-display" class="a11y-fs-display">16px</span>
+      <button onclick="increaseFontSize()" class="a11y-btn" aria-label="Aumentar tamaño de texto" title="Aumentar texto">
+        <i class="bi bi-zoom-in"></i>
+      </button>
+    </div>
+
+    <div class="a11y-divider"></div>
+
+    <button id="high-contrast-btn" onclick="toggleHighContrast()" class="a11y-contrast-btn" aria-pressed="false" aria-label="Activar alto contraste">
+      <i class="bi bi-eye"></i>
+      <span class="d-none d-sm-inline">Alto contraste</span>
+    </button>
+
+    <div class="ms-auto d-flex align-items-center gap-2">
+      <i class="bi bi-universal-access" style="opacity:0.75;"></i>
+      <span style="font-family:'Lexend',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.05em;">InclúyeT</span>
+    </div>
+  </div>
+
+  <!-- ─── Main Wrapper ──────────────────────────────────────────────────── -->
+  <div id="main-wrapper">
+
+    <!-- ══════════════════════ LANDING PAGE ══════════════════════════════ -->
+    <div id="view-landing">
+
+      <!-- Landing Navigation -->
+      <header class="landing-nav sticky-top">
+        <div class="container-xl">
+          <button onclick="navigate('landing')" class="logo-btn">
+            <div class="logo-icon"><i class="bi bi-universal-access" style="font-size:1rem;"></i></div>
+            <span class="logo-text">InclúyeT</span>
+          </button>
+          <nav class="d-none d-md-flex align-items-center gap-4 ms-5" aria-label="Navegación principal">
+            <a href="#features" class="landing-nav-link">Cómo funciona</a>
+            <a href="#" class="landing-nav-link">Empresas</a>
+            <a href="#" class="landing-nav-link">Recursos</a>
+          </nav>
+          <div class="ms-auto d-flex align-items-center gap-2">
+            <button onclick="navigate('login')" class="btn btn-secondary-custom btn-sm">Iniciar sesión</button>
+            <button onclick="navigate('register')" class="btn btn-accent-custom btn-sm">Registrarse</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Hero -->
+      <section class="hero-section" aria-labelledby="hero-title">
+        <div class="hero-bg-gradient" aria-hidden="true"></div>
+        <div class="container-xl position-relative">
+          <div class="row align-items-center g-5 py-2">
+            <div class="col-md-6">
+              <div class="hero-chip mb-4"><span aria-hidden="true">✨</span> Plataforma 100% accesible</div>
+              <h1 id="hero-title" class="hero-title">
+                Tu talento merece un trabajo <span class="text-warning">sin barreras</span>
+              </h1>
+              <p class="hero-subtitle">
+                InclúyeT conecta a personas con discapacidad con empresas comprometidas con la inclusión real. Encuentra trabajo en un ambiente que te respeta y valora.
+              </p>
+              <div class="d-flex flex-wrap gap-3 mt-4">
+                <button onclick="navigate('register')" class="btn btn-accent-custom btn-lg d-flex align-items-center gap-2">
+                  Buscar empleo <i class="bi bi-arrow-right"></i>
+                </button>
+                <button onclick="navigate('register')" class="btn-outline-white">Soy empleador</button>
+              </div>
+            </div>
+            <div class="col-md-6 d-none d-md-block">
+              <div class="hero-card">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                  <div class="hero-avatar">M</div>
+                  <div>
+                    <p class="fw-semibold text-white mb-0" style="font-size:0.875rem;">María consiguió empleo</p>
+                    <p class="mb-0" style="color:rgba(255,255,255,0.5);font-size:0.75rem;">hace 2 semanas · Analista de Datos</p>
+                  </div>
+                  <i class="bi bi-check-circle-fill text-success ms-auto fs-5"></i>
+                </div>
+                <p class="fst-italic" style="color:rgba(255,255,255,0.8);font-size:0.875rem;line-height:1.6;">
+                  "InclúyeT me dio la confianza de postularme a empresas que realmente tienen cultura inclusiva. En 3 semanas tenía entrevistas."
+                </p>
+                <div class="row g-2 mt-3 text-center">
+                  <div class="col-4"><div class="hero-stat-card"><p class="fw-bold text-white mb-0" style="font-family:'Lexend',sans-serif;">1,800+</p><p style="color:rgba(255,255,255,0.5);font-size:0.75rem;margin:0;">Candidatos</p></div></div>
+                  <div class="col-4"><div class="hero-stat-card"><p class="fw-bold text-white mb-0" style="font-family:'Lexend',sans-serif;">130+</p><p style="color:rgba(255,255,255,0.5);font-size:0.75rem;margin:0;">Empresas</p></div></div>
+                  <div class="col-4"><div class="hero-stat-card"><p class="fw-bold text-white mb-0" style="font-family:'Lexend',sans-serif;">280+</p><p style="color:rgba(255,255,255,0.5);font-size:0.75rem;margin:0;">Ofertas</p></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- A11y chips showcase -->
+      <section class="py-4" style="background:var(--card);border-bottom:1px solid var(--border);">
+        <div class="container-xl">
+          <p class="fw-bold mb-3" style="font-size:0.75rem;color:var(--muted-fg);text-transform:uppercase;letter-spacing:0.05em;">
+            Filtra por tus necesidades de accesibilidad
+          </p>
+          <div class="d-flex flex-wrap gap-2" id="landing-a11y-chips"></div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section id="features" class="py-5" aria-labelledby="features-title">
+        <div class="container-xl">
+          <div class="text-center mb-5">
+            <h2 id="features-title" class="fw-bold mb-3" style="font-family:'Lexend',sans-serif;">¿Por qué InclúyeT?</h2>
+            <p style="color:var(--muted-fg);max-width:500px;margin:0 auto;">Diseñado desde el principio para eliminar barreras y amplificar oportunidades.</p>
+          </div>
+          <div class="row g-4" id="features-grid"></div>
+        </div>
+      </section>
+
+      <!-- How it works -->
+      <section class="py-5" style="background:var(--muted-bg);" aria-labelledby="how-title">
+        <div class="container-xl">
+          <h2 id="how-title" class="fw-bold text-center mb-5" style="font-family:'Lexend',sans-serif;">¿Cómo funciona?</h2>
+          <div class="row g-4 text-center" id="how-grid"></div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="py-5 text-center">
+        <div class="container" style="max-width:600px;">
+          <h2 class="fw-bold mb-3" style="font-family:'Lexend',sans-serif;">Empieza hoy, sin costo</h2>
+          <p style="color:var(--muted-fg);margin-bottom:32px;">Regístrate en menos de 3 minutos y accede a más de 280 ofertas de empleo inclusivo.</p>
+          <button onclick="navigate('register')" class="btn btn-accent-custom btn-lg d-inline-flex align-items-center gap-2">
+            Crear cuenta gratuita <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="py-4" style="background:var(--primary);color:white;">
+        <div class="container-xl">
+          <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+            <div class="d-flex align-items-center gap-2">
+              <div class="logo-icon logo-icon-sm d-flex align-items-center justify-content-center" style="color:white;"><i class="bi bi-universal-access"></i></div>
+              <span style="font-family:'Lexend',sans-serif;font-weight:700;">InclúyeT</span>
+            </div>
+            <p class="mb-0 text-center" style="color:rgba(255,255,255,0.5);font-size:0.875rem;">© 2026 InclúyeT · Plataforma inclusiva de empleo · Todos los derechos reservados</p>
+            <div class="d-flex gap-4">
+              <a href="#" class="text-decoration-none footer-link" style="color:rgba(255,255,255,0.5);">Privacidad</a>
+              <a href="#" class="text-decoration-none footer-link" style="color:rgba(255,255,255,0.5);">Términos</a>
+              <a href="#" class="text-decoration-none footer-link" style="color:rgba(255,255,255,0.5);">Contacto</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <!-- END LANDING -->
+
+    <!-- ══════════════════════ LOGIN PAGE ════════════════════════════════ -->
+    <div id="view-login" class="d-none">
+      <header style="background:var(--card);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 24px;">
+        <button onclick="navigate('landing')" class="logo-btn">
+          <div class="logo-icon"><i class="bi bi-universal-access"></i></div>
+          <span class="logo-text">InclúyeT</span>
+        </button>
+      </header>
+      <main id="main-content-login" class="min-vh-fill p-4">
+        <div style="width:100%;max-width:440px;">
+          <div class="i-card shadow-sm">
+            <h1 class="fw-bold mb-1" style="font-family:'Lexend',sans-serif;font-size:1.5rem;">Bienvenida/o de vuelta</h1>
+            <p style="color:var(--muted-fg);font-size:0.875rem;margin-bottom:24px;">Inicia sesión para continuar con tu búsqueda.</p>
+
+            <!-- Role selector -->
+            <fieldset class="mb-4">
+              <legend class="fw-semibold mb-2" style="font-size:0.875rem;">Iniciar sesión como</legend>
+              <div class="row g-2">
+                <div class="col-4">
+                  <label class="role-card active" id="role-card-candidate">
+                    <input type="radio" name="login-role" value="candidate" class="d-none" checked onchange="selectRole('candidate')"/>
+                    <i class="bi bi-person role-icon"></i>
+                    <span>Candidata/o</span>
+                  </label>
+                </div>
+                <div class="col-4">
+                  <label class="role-card" id="role-card-company">
+                    <input type="radio" name="login-role" value="company" class="d-none" onchange="selectRole('company')"/>
+                    <i class="bi bi-building role-icon"></i>
+                    <span>Empresa</span>
+                  </label>
+                </div>
+                <div class="col-4">
+                  <label class="role-card" id="role-card-admin">
+                    <input type="radio" name="login-role" value="admin" class="d-none" onchange="selectRole('admin')"/>
+                    <i class="bi bi-shield role-icon"></i>
+                    <span>Admin</span>
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+
+            <form onsubmit="handleLoginSubmit(event)" class="d-flex flex-column gap-3">
+              <div>
+                <label for="login-email" class="i-label">Correo electrónico <span style="color:var(--destructive);">*</span></label>
+                <input type="email" id="login-email" class="i-input" placeholder="tu@correo.com" required />
+              </div>
+              <div>
+                <label for="login-password" class="i-label">Contraseña <span style="color:var(--destructive);">*</span></label>
+                <div class="position-relative">
+                  <input type="password" id="login-password" class="i-input pe-5" placeholder="••••••••" required />
+                  <button type="button" onclick="togglePassword('login-password', this)" class="password-toggle" aria-label="Mostrar contraseña">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="text-end">
+                <a href="#" style="color:var(--primary);font-size:0.875rem;font-weight:600;text-decoration:none;">¿Olvidaste tu contraseña?</a>
+              </div>
+              <button type="submit" class="btn btn-primary-custom w-100" style="height:48px;font-size:1rem;margin-top:4px;">Iniciar sesión</button>
+            </form>
+            <p class="text-center mt-4 mb-0" style="font-size:0.875rem;color:var(--muted-fg);">
+              ¿No tienes cuenta? <button onclick="navigate('register')" class="btn-link-custom">Regístrate aquí</button>
+            </p>
+          </div>
+        </div>
+      </main>
+    </div>
+    <!-- END LOGIN -->
+
+    <!-- ══════════════════════ REGISTER PAGE ════════════════════════════ -->
+    <div id="view-register" class="d-none">
+      <header style="background:var(--card);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;gap:12px;padding:0 24px;">
+        <button onclick="navigate('landing')" class="logo-btn">
+          <div class="logo-icon"><i class="bi bi-universal-access"></i></div>
+          <span class="logo-text">InclúyeT</span>
+        </button>
+        <span class="d-none d-sm-inline" style="color:var(--muted-fg);font-size:0.875rem;">/ Crear cuenta</span>
+      </header>
+      <main id="main-content-register" class="p-4" style="display:flex;align-items:flex-start;justify-content:center;padding-top:2rem!important;">
+        <div style="width:100%;max-width:520px;">
+          <div class="i-card shadow-sm">
+            <h1 class="fw-bold mb-1" style="font-family:'Lexend',sans-serif;font-size:1.5rem;">Crear cuenta</h1>
+            <p style="color:var(--muted-fg);font-size:0.875rem;margin-bottom:24px;">Elige tu tipo de cuenta para comenzar.</p>
+
+            <!-- Tab switcher -->
+            <div class="register-tabs mb-4" role="tablist">
+              <button id="tab-candidate" role="tab" aria-selected="true" onclick="switchRegisterTab('candidate')" class="register-tab active">
+                <i class="bi bi-person"></i> Soy candidata/o
+              </button>
+              <button id="tab-company" role="tab" aria-selected="false" onclick="switchRegisterTab('company')" class="register-tab">
+                <i class="bi bi-building"></i> Soy empresa
+              </button>
+            </div>
+
+            <!-- Candidate Form -->
+            <form id="register-candidate-form" onsubmit="handleRegisterSubmit(event,'candidate')" class="d-flex flex-column gap-3">
+              <div>
+                <label for="reg-name" class="i-label">Nombre completo <span style="color:var(--destructive);">*</span></label>
+                <input type="text" id="reg-name" class="i-input" placeholder="Tu nombre" required />
+              </div>
+              <div>
+                <label for="reg-email" class="i-label">Correo electrónico <span style="color:var(--destructive);">*</span></label>
+                <input type="email" id="reg-email" class="i-input" placeholder="tu@correo.com" required />
+              </div>
+              <div class="row g-3">
+                <div class="col-6">
+                  <label for="reg-phone" class="i-label">Teléfono</label>
+                  <input type="tel" id="reg-phone" class="i-input" placeholder="55 1234 5678" />
+                </div>
+                <div class="col-6">
+                  <label for="reg-city" class="i-label">Ciudad</label>
+                  <input type="text" id="reg-city" class="i-input" placeholder="Ciudad de México" />
+                </div>
+              </div>
+              <div class="row g-3">
+                <div class="col-6">
+                  <label for="reg-pass" class="i-label">Contraseña <span style="color:var(--destructive);">*</span></label>
+                  <input type="password" id="reg-pass" class="i-input" placeholder="••••••••" required />
+                </div>
+                <div class="col-6">
+                  <label for="reg-confirm" class="i-label">Confirmar <span style="color:var(--destructive);">*</span></label>
+                  <input type="password" id="reg-confirm" class="i-input" placeholder="••••••••" required />
+                </div>
+              </div>
+              <div>
+                <label for="reg-disability" class="i-label">Tipo de discapacidad <span style="color:var(--muted-fg);font-weight:400;">(opcional)</span></label>
+                <p style="font-size:0.75rem;color:var(--muted-fg);margin-bottom:6px;">Esta información es confidencial y solo se comparte con empleadores si tú lo autorizas.</p>
+                <select id="reg-disability" class="i-input">
+                  <option value="">Prefiero no indicar</option>
+                  <option value="motriz">Motriz</option>
+                  <option value="visual">Visual / Baja visión</option>
+                  <option value="auditiva">Auditiva / Hipoacusia</option>
+                  <option value="intelectual">Intelectual</option>
+                  <option value="psicosocial">Psicosocial</option>
+                  <option value="multiple">Múltiple</option>
+                  <option value="otra">Otra</option>
+                </select>
+              </div>
+              <div>
+                <label class="d-flex align-items-start gap-2" style="cursor:pointer;">
+                  <input type="checkbox" required style="margin-top:3px;accent-color:var(--primary);width:16px;height:16px;" />
+                  <span style="font-size:0.875rem;color:var(--muted-fg);">
+                    Acepto los <a href="#" style="color:var(--primary);">términos y condiciones</a> y la <a href="#" style="color:var(--primary);">política de privacidad</a>
+                  </span>
+                </label>
+              </div>
+              <button type="submit" class="btn btn-primary-custom w-100 d-flex align-items-center justify-content-center gap-2" style="height:48px;font-size:1rem;">
+                Crear cuenta <i class="bi bi-arrow-right"></i>
+              </button>
+            </form>
+
+            <!-- Company Form -->
+            <form id="register-company-form" class="d-none d-flex flex-column gap-3" onsubmit="handleRegisterSubmit(event,'company')">
+              <div>
+                <label for="comp-name" class="i-label">Nombre de la empresa <span style="color:var(--destructive);">*</span></label>
+                <input type="text" id="comp-name" class="i-input" placeholder="Mi Empresa SA de CV" required />
+              </div>
+              <div>
+                <label for="comp-rfc" class="i-label">RFC <span style="color:var(--destructive);">*</span></label>
+                <p style="font-size:0.75rem;color:var(--muted-fg);margin-bottom:6px;">Necesario para verificación de cuenta empresarial</p>
+                <input type="text" id="comp-rfc" class="i-input" placeholder="ABC123456789" required />
+              </div>
+              <div>
+                <label for="comp-sector" class="i-label">Sector <span style="color:var(--destructive);">*</span></label>
+                <select id="comp-sector" class="i-input" required>
+                  <option value="">Seleccionar sector</option>
+                  <option>Tecnología</option><option>Finanzas</option><option>Comercio</option>
+                  <option>Salud</option><option>Educación</option><option>Otro</option>
+                </select>
+              </div>
+              <div>
+                <label for="comp-email" class="i-label">Correo de contacto <span style="color:var(--destructive);">*</span></label>
+                <input type="email" id="comp-email" class="i-input" placeholder="rrhh@empresa.com" required />
+              </div>
+              <div class="row g-3">
+                <div class="col-6">
+                  <label for="comp-pass" class="i-label">Contraseña <span style="color:var(--destructive);">*</span></label>
+                  <input type="password" id="comp-pass" class="i-input" placeholder="••••••••" required />
+                </div>
+                <div class="col-6">
+                  <label for="comp-confirm" class="i-label">Confirmar <span style="color:var(--destructive);">*</span></label>
+                  <input type="password" id="comp-confirm" class="i-input" placeholder="••••••••" required />
+                </div>
+              </div>
+              <div class="alert-warning-custom">
+                <strong class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-exclamation-triangle"></i> Compromiso de inclusión</strong>
+                Al registrarte como empresa, aceptas revisar nuestras guías de contratación inclusiva y recibir capacitación sobre ajustes razonables.
+              </div>
+              <button type="submit" class="btn btn-primary-custom w-100 d-flex align-items-center justify-content-center gap-2" style="height:48px;font-size:1rem;">
+                Crear cuenta <i class="bi bi-arrow-right"></i>
+              </button>
+            </form>
+
+            <p class="text-center mt-4 mb-0" style="font-size:0.875rem;color:var(--muted-fg);">
+              ¿Ya tienes cuenta? <button onclick="navigate('login')" class="btn-link-custom">Inicia sesión</button>
+            </p>
+          </div>
+        </div>
+      </main>
+    </div>
+    <!-- END REGISTER -->
+
+    <!-- ══════════════════════ APP CONTAINER ════════════════════════════ -->
+    <div id="app-container" class="d-none">
+
+      <!-- ── Sidebar ──────────────────────────────────────────────────── -->
+      <aside id="app-sidebar" aria-label="Navegación lateral">
+        <div class="sidebar-header">
+          <div class="d-flex align-items-center gap-2">
+            <div class="logo-icon"><i class="bi bi-universal-access"></i></div>
+            <span style="font-family:'Lexend',sans-serif;font-weight:700;font-size:1.125rem;color:var(--primary);">InclúyeT</span>
+          </div>
+        </div>
+
+        <!-- Nav items (rendered by JS) -->
+        <nav id="sidebar-nav-candidate" class="d-none" aria-label="Menú candidato"></nav>
+        <nav id="sidebar-nav-company" class="d-none" aria-label="Menú empresa"></nav>
+        <nav id="sidebar-nav-admin" class="d-none" aria-label="Menú administración"></nav>
+
+        <!-- User card -->
+        <div class="sidebar-user-card">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div id="sidebar-user-avatar" class="sidebar-avatar">M</div>
+            <div class="flex-grow-1 min-w-0">
+              <p id="sidebar-user-name" class="fw-semibold mb-0 text-truncate" style="font-size:0.875rem;">María López</p>
+              <p id="sidebar-user-role" style="font-size:0.75rem;color:var(--muted-fg);margin:0;">Candidata</p>
+            </div>
+          </div>
+          <button onclick="handleLogout()" class="btn-ghost-danger">
+            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+          </button>
+        </div>
+      </aside>
+
+      <!-- ── Main Area ────────────────────────────────────────────────── -->
+      <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;">
+
+        <!-- Top bar -->
+        <header class="app-topbar">
+          <button id="sidebar-toggle" onclick="toggleSidebar()" class="icon-btn" aria-label="Abrir/cerrar menú">
+            <i class="bi bi-list fs-5"></i>
+          </button>
+          <h1 id="app-page-title" class="fw-bold mb-0 flex-grow-1" style="font-family:'Lexend',sans-serif;font-size:1.125rem;">Inicio</h1>
+          <button class="icon-btn position-relative" aria-label="Notificaciones">
+            <i class="bi bi-bell fs-5"></i>
+            <span class="notif-dot" aria-hidden="true"></span>
+          </button>
+        </header>
+
+        <!-- Page content -->
+        <main id="main-content" style="flex:1;overflow-y:auto;padding:24px;">
+          <div id="view-candidate-home"    class="d-none"></div>
+          <div id="view-job-search"        class="d-none"></div>
+          <div id="view-job-detail"        class="d-none"></div>
+          <div id="view-profile"           class="d-none"></div>
+          <div id="view-applications"      class="d-none"></div>
+          <div id="view-messages"          class="d-none"></div>
+          <div id="view-resources"         class="d-none"></div>
+          <div id="view-company-dashboard" class="d-none"></div>
+          <div id="view-post-job"          class="d-none"></div>
+          <div id="view-company-applicants" class="d-none"></div>
+          <div id="view-admin-panel"       class="d-none"></div>
+        </main>
+      </div>
+    </div>
+    <!-- END APP CONTAINER -->
+
+  </div>
+  <!-- END MAIN WRAPPER -->
+
+  <!-- ─── Scripts ───────────────────────────────────────────────────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
