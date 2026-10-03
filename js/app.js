@@ -1,69 +1,22 @@
+import { supabase } from './supabase.js';
 // ─── Mock Data ────────────────────────────────────────────────────────────────
 const LOGO_COLORS = { BN:'#1d4ed8',SI:'#7c3aed',TA:'#0d9488',DG:'#d97706',CF:'#059669',MI:'#db2777' };
 
-const JOBS = [
-  { id:1, title:'Analista de Datos', company:'Banco Nacional de México', location:'CDMX (Remoto disponible)', type:'Tiempo completo', salary:'$18,000 – $22,000 MXN', posted:'Hace 2 días', tags:['SQL','Excel','Power BI'], a11y:['remoto','horario-flexible','lector-pantalla','motor'], description:'El Banco Nacional de México busca un Analista de Datos para unirse a nuestro equipo de inteligencia de negocios. Trabajarás analizando grandes volúmenes de información para apoyar decisiones estratégicas. Somos una empresa comprometida con la inclusión laboral, con instalaciones accesibles y políticas de ajustes razonables para todos nuestros colaboradores.', requirements:['Licenciatura en Sistemas, Estadística o afín','2 años de experiencia con SQL','Manejo avanzado de Excel y Power BI','Capacidad analítica y atención al detalle'], logo:'BN', category:'Tecnología', featured:true },
-  { id:2, title:'Diseñadora/or UX Senior', company:'Startup Inclusiva', location:'Guadalajara (Híbrido)', type:'Tiempo completo', salary:'$22,000 – $30,000 MXN', posted:'Hace 1 día', tags:['Figma','UX Research','WCAG'], a11y:['sordera','remoto','sensorial','motor'], description:'Empresa de tecnología con misión de inclusión busca UX Designer con pasión por la accesibilidad digital. Trabajarás en proyectos de alto impacto social diseñando experiencias para todas las personas.', requirements:['Portfolio con proyectos de accesibilidad','Dominio de Figma y metodologías de investigación','Conocimiento de WCAG 2.1 AA','Inglés intermedio'], logo:'SI', category:'Diseño', featured:true },
-  { id:3, title:'Agente de Atención al Cliente', company:'TeleAsiste México', location:'Monterrey', type:'Medio tiempo', salary:'$8,500 – $11,000 MXN', posted:'Hace 3 días', tags:['Servicio al cliente','Chat','CRM'], a11y:['motor','horario-flexible','remoto'], description:'Centro de atención al cliente 100% digital. Atenderás a usuarios vía chat y correo electrónico, sin necesidad de llamadas telefónicas. Ambiente de trabajo inclusivo y equipo diverso.', requirements:['Bachillerato terminado','Buena redacción y ortografía','Empatía y paciencia'], logo:'TA', category:'Atención al Cliente', featured:false },
-  { id:4, title:'Contadora/or Junior', company:'Despacho García & Asociados', location:'Ciudad de México', type:'Tiempo completo', salary:'$14,000 – $17,000 MXN', posted:'Hace 5 días', tags:['Contabilidad','SAP','Fiscal'], a11y:['silla-ruedas','horario-flexible'], description:'Despacho contable con instalaciones 100% accesibles en planta baja. Buscamos recién egresados con ganas de aprender y crecer profesionalmente.', requirements:['Lic. en Contaduría (titulado o pasante)','Conocimiento básico de SAP','Disponibilidad para aprender'], logo:'DG', category:'Finanzas', featured:false },
-  { id:5, title:'Desarrolladora/or Frontend', company:'CodeForAll', location:'100% Remoto', type:'Freelance / Proyecto', salary:'$28,000 – $38,000 MXN', posted:'Hoy', tags:['React','TypeScript','Accesibilidad web'], a11y:['remoto','lector-pantalla','motor','horario-flexible','sordera','silla-ruedas'], description:'Empresa especializada en desarrollo web accesible. Construimos productos digitales que cumplen WCAG 2.1 AA. Trabajamos 100% remoto y valoramos la diversidad.', requirements:['3+ años con React y TypeScript','Conocimiento de WCAG 2.1','Experiencia con herramientas de accesibilidad'], logo:'CF', category:'Tecnología', featured:true },
-  { id:6, title:'Community Manager', company:'Marca Inclusión', location:'CDMX (Híbrido)', type:'Tiempo completo', salary:'$12,000 – $16,000 MXN', posted:'Hace 4 días', tags:['Redes sociales','Contenido','Canva'], a11y:['sordera','horario-flexible','sensorial'], description:'Agencia de comunicación con valores de diversidad busca Community Manager creativo para gestionar redes sociales de marcas comprometidas con la inclusión.', requirements:['Experiencia en gestión de redes','Creatividad y buen ojo visual','Conocimiento de accesibilidad en contenido digital'], logo:'MI', category:'Marketing', featured:false },
-];
-
+let JOBS = [];
 const A11Y_FEATURES = [
-  { id:'remoto', label:'Trabajo remoto', emoji:'🏠' },
-  { id:'horario-flexible', label:'Horario flexible', emoji:'🕐' },
-  { id:'silla-ruedas', label:'Acceso silla de ruedas', emoji:'♿' },
-  { id:'lector-pantalla', label:'Lector de pantalla', emoji:'👁️' },
-  { id:'sordera', label:'Intérprete LSM', emoji:'🤟' },
-  { id:'motor', label:'Adaptaciones motoras', emoji:'🖱️' },
-  { id:'sensorial', label:'Ambiente adaptado', emoji:'🧠' },
+  { id:'remoto', label:'Trabajo remoto', icon:'bi-house' },
+  { id:'horario-flexible', label:'Horario flexible', icon:'bi-clock' },
+  { id:'silla-ruedas', label:'Acceso silla de ruedas', icon:'bi-universal-access' },
+  { id:'lector-pantalla', label:'Lector de pantalla', icon:'bi-eye' },
+  { id:'sordera', label:'Intérprete LSP', icon:'bi-chat-square-dots' },
+  { id:'motor', label:'Adaptaciones motoras', icon:'bi-mouse' },
+  { id:'sensorial', label:'Ambiente adaptado', icon:'bi-sliders' },
 ];
-
-const APPS_DATA = [
-  { id:1, job:'Analista de Datos', company:'Banco Nacional de México', date:'12 jun 2026', status:'En revisión', color:'yellow' },
-  { id:2, job:'Diseñadora/or UX Senior', company:'Startup Inclusiva', date:'10 jun 2026', status:'Entrevista programada', color:'blue' },
-  { id:3, job:'Desarrolladora/or Frontend', company:'CodeForAll', date:'8 jun 2026', status:'Contratado', color:'green' },
-  { id:4, job:'Community Manager', company:'Marca Inclusión', date:'5 jun 2026', status:'No seleccionado', color:'red' },
-  { id:5, job:'Contadora/or Junior', company:'Despacho García & Asociados', date:'3 jun 2026', status:'Postulado', color:'gray' },
-];
-
-const MSGS = [
-  { id:1, from:'Startup Inclusiva', initials:'SI', time:'10:34', unread:2, preview:'¿Tienes disponibilidad para una entrevista el martes?', thread:[
-    { mine:false, text:'Hola María, gracias por tu postulación al puesto de UX Senior. Hemos revisado tu perfil y nos gustaría conocerte mejor.', time:'Ayer 15:20' },
-    { mine:true, text:'¡Hola! Muchas gracias, con gusto. ¿En qué formato sería la entrevista?', time:'Ayer 16:05' },
-    { mine:false, text:'Será por videollamada vía Google Meet. ¿Tienes disponibilidad el martes 18 de junio a las 10:00 am?', time:'Hoy 10:34' },
-    { mine:false, text:'Si necesitas algún ajuste razonable (intérprete, subtítulos, etc.) con gusto lo coordinamos.', time:'Hoy 10:35' },
-  ]},
-  { id:2, from:'Banco Nacional de México', initials:'BN', time:'Ayer', unread:0, preview:'Hemos recibido tu postulación y la estamos revisando.', thread:[
-    { mine:false, text:'Hola, hemos recibido tu postulación al puesto de Analista de Datos y la estamos revisando. Te contactaremos en los próximos días.', time:'Ayer 09:15' },
-  ]},
-  { id:3, from:'CodeForAll', initials:'CF', time:'Lun', unread:0, preview:'¡Felicidades! Hemos decidido contratarte.', thread:[
-    { mine:false, text:'¡Felicidades, María! Hemos decidido contratarte para el puesto de Desarrolladora Frontend. En breve te enviamos los detalles del contrato.', time:'Lun 14:00' },
-    { mine:true, text:'¡Muchas gracias! Estoy muy emocionada. Quedo pendiente del contrato.', time:'Lun 14:30' },
-  ]},
-];
-
-const CHART_DATA = [
-  { mes:'Ene', val:12 },{ mes:'Feb', val:19 },{ mes:'Mar', val:8 },
-  { mes:'Abr', val:25 },{ mes:'May', val:32 },{ mes:'Jun', val:41 },
-];
-
-const COMPANY_APPLICANTS = [
-  { id:1, name:'María López', date:'12 jun', status:'Entrevista', disability:'Movilidad reducida', score:92 },
-  { id:2, name:'Carlos Ramos', date:'11 jun', status:'En revisión', disability:'Baja visión', score:88 },
-  { id:3, name:'Ana Jiménez', date:'10 jun', status:'Entrevista', disability:'Hipoacusia', score:85 },
-  { id:4, name:'Pedro Sánchez', date:'9 jun', status:'Descartado', disability:'Sin especificar', score:60 },
-  { id:5, name:'Laura Torres', date:'8 jun', status:'En revisión', disability:'Parálisis cerebral', score:79 },
-];
-
-const ADMIN_USERS = [
-  { id:1, name:'María López García', email:'maria@email.com', role:'Candidata', status:'Activo', joined:'15 mar 2026' },
-  { id:2, name:'Banco Nacional SA', email:'rrhh@banconacional.mx', role:'Empresa', status:'Verificado', joined:'10 ene 2026' },
-  { id:3, name:'Carlos Mendoza', email:'carlos@email.com', role:'Candidato', status:'Activo', joined:'20 abr 2026' },
-  { id:4, name:'Startup Inclusiva', email:'contacto@startupinclusiva.com', role:'Empresa', status:'Verificado', joined:'5 feb 2026' },
-  { id:5, name:'Ana Torres', email:'ana.torres@email.com', role:'Candidata', status:'Inactivo', joined:'1 may 2026' },
-];
+let APPS_DATA = [];
+let MSGS = [];
+let CHART_DATA = [];
+let COMPANY_APPLICANTS = [];
+let ADMIN_USERS = [];
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const state = {
@@ -71,6 +24,7 @@ const state = {
   role: null,
   fontSize: 16,
   highContrast: false,
+  dyslexia: false,
   selectedJob: JOBS[0],
   activeFilters: [],
   searchQuery: '',
@@ -86,6 +40,11 @@ const state = {
   sidebarOpen: true,
   loginRole: 'candidate',
   selectedA11y: [],
+  appliedJobs: [],
+  medicalConsent: false,
+  profileTitle: 'Analista de Datos · Diseñadora UX',
+  profileCity: 'Lima',
+  profileBio: 'Profesional con 4 años de experiencia en análisis de datos y diseño UX. Apasionada por la accesibilidad digital y los productos centrados en el usuario.',
 };
 
 let chartInstance = null;
@@ -102,7 +61,7 @@ function statusBadge(status, color) {
 function a11yBadge(id) {
   const feat = A11Y_FEATURES.find(f => f.id === id);
   if (!feat) return '';
-  return `<span class="a11y-badge"><span aria-hidden="true">${feat.emoji}</span><span class="d-none d-sm-inline">${feat.label}</span></span>`;
+  return `<span class="a11y-badge"><i class="bi ${feat.icon}" aria-hidden="true"></i><span class="d-none d-sm-inline">${feat.label}</span></span>`;
 }
 
 function logoBadge(initials, size='md') {
@@ -115,6 +74,7 @@ function jobCard(job) {
   const a11yBadges = job.a11y.slice(0,3).map(id => a11yBadge(id)).join('') +
     (job.a11y.length > 3 ? `<span class="a11y-badge">+${job.a11y.length - 3}</span>` : '');
   const tags = job.tags.map(t => `<span style="font-size:0.75rem;padding:2px 8px;border-radius:6px;background:var(--muted-bg);color:var(--muted-fg);">${t}</span>`).join('');
+  const isApplied = state.appliedJobs.includes(job.id);
   return `
     <article class="job-card" tabindex="0" role="button" aria-label="Ver oferta: ${job.title}" onclick="viewJob(${job.id})" onkeydown="if(event.key==='Enter')viewJob(${job.id})">
       ${job.featured ? '<div class="job-card-featured-bar"></div>' : ''}
@@ -140,31 +100,71 @@ function jobCard(job) {
       <div class="d-flex align-items-center justify-content-between px-3 pb-3">
         <span style="font-size:0.75rem;color:var(--muted-fg);">${job.posted}</span>
         <button class="btn btn-primary-custom btn-sm d-flex align-items-center gap-1" onclick="event.stopPropagation();viewJob(${job.id})">
-          Ver oferta <i class="bi bi-chevron-right"></i>
+          ${isApplied ? 'Ver postulación' : 'Ver oferta'} <i class="bi bi-chevron-right"></i>
         </button>
       </div>
     </article>`;
 }
 
 // ─── Accessibility ────────────────────────────────────────────────────────────
+function loadA11yState() {
+  const saved = localStorage.getItem('incluyet-a11y');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      state.fontSize = parsed.fontSize || 16;
+      state.highContrast = !!parsed.highContrast;
+      state.dyslexia = !!parsed.dyslexia;
+    } catch(e) {}
+  }
+  applyFontSize();
+  applyHighContrast();
+  applyDyslexia();
+}
+function saveA11yState() {
+  localStorage.setItem('incluyet-a11y', JSON.stringify({
+    fontSize: state.fontSize,
+    highContrast: state.highContrast,
+    dyslexia: state.dyslexia
+  }));
+}
 function increaseFontSize() {
   state.fontSize = Math.min(22, state.fontSize + 2);
   applyFontSize();
+  saveA11yState();
 }
 function decreaseFontSize() {
   state.fontSize = Math.max(14, state.fontSize - 2);
   applyFontSize();
+  saveA11yState();
 }
 function applyFontSize() {
   document.documentElement.style.setProperty('--fs-base', state.fontSize + 'px');
-  el('font-size-display').textContent = state.fontSize + 'px';
+  const disp = el('font-size-display');
+  if (disp) disp.textContent = state.fontSize + 'px';
 }
 function toggleHighContrast() {
   state.highContrast = !state.highContrast;
+  applyHighContrast();
+  saveA11yState();
+}
+function applyHighContrast() {
   document.body.classList.toggle('high-contrast', state.highContrast);
   const btn = el('high-contrast-btn');
-  btn.setAttribute('aria-pressed', String(state.highContrast));
+  if (btn) btn.setAttribute('aria-pressed', String(state.highContrast));
 }
+function toggleDyslexia() {
+  state.dyslexia = !state.dyslexia;
+  applyDyslexia();
+  saveA11yState();
+}
+function applyDyslexia() {
+  document.body.classList.toggle('font-dyslexia', state.dyslexia);
+  const btn = el('dyslexia-btn');
+  if (btn) btn.setAttribute('aria-pressed', String(state.dyslexia));
+}
+
+document.addEventListener('DOMContentLoaded', loadA11yState);
 function togglePassword(inputId, btn) {
   const input = el(inputId);
   if (input.type === 'password') { input.type = 'text'; btn.innerHTML = '<i class="bi bi-eye-slash"></i>'; }
@@ -176,15 +176,87 @@ function selectRole(r) {
   state.loginRole = r;
   ['candidate','company','admin'].forEach(x => el('role-card-'+x).classList.toggle('active', x === r));
 }
-function handleLoginSubmit(e) { e.preventDefault(); handleLogin(state.loginRole); }
-function handleRegisterSubmit(e, role) { e.preventDefault(); handleLogin(role); }
+
+async function handleLoginSubmit(e) { 
+  e.preventDefault(); 
+  const email = el('login-email').value;
+  const pass = el('login-password').value;
+  
+  if (window.supabaseClient) {
+    const { data, error } = await window.supabaseClient.auth.signInWithPassword({
+      email, password: pass
+    });
+    if (error) {
+      alert('Error al iniciar sesión: ' + error.message);
+      return;
+    }
+    
+    // Obtener el rol real directamente desde la metadata del usuario
+    const trueRole = data.user.user_metadata?.role || state.loginRole;
+    
+    // Fetch profile
+    const { data: profile } = await window.supabaseClient.from('profiles').select('*').eq('id', data.user.id).single();
+    if (profile && profile.full_name) {
+      state.userName = profile.full_name;
+    } else {
+      state.userName = data.user.user_metadata?.full_name || email.split('@')[0];
+    }
+    
+    handleLogin(trueRole); 
+  } else {
+    state.userName = email.split('@')[0]; // Fallback if no Supabase
+    handleLogin(state.loginRole); 
+  }
+}
+
+async function handleRegisterSubmit(e, role) {
+  e.preventDefault();
+  
+  let nameInput = role === 'candidate' ? el('reg-name') : el('reg-company-name');
+  let emailInput = role === 'candidate' ? el('reg-email') : el('reg-company-email');
+  let passInput = role === 'candidate' ? el('reg-pass') : el('reg-company-pass');
+  
+  const name = nameInput ? nameInput.value : 'Usuario';
+  const email = emailInput ? emailInput.value : '';
+  const pass = passInput ? passInput.value : '';
+
+  if (window.supabaseClient) {
+    const { data, error } = await window.supabaseClient.auth.signUp({
+      email, password: pass,
+      options: { data: { full_name: name, role: role } }
+    });
+    if (error) {
+      alert('Error al registrarse: ' + error.message);
+      return;
+    }
+    state.userName = name;
+  } else {
+    state.userName = name;
+  }
+  
+  handleLogin(role);
+}
+
 function handleLogin(role) {
   state.role = role;
+  if (!state.userName) {
+    state.userName = role === 'candidate' ? 'María López' : role === 'company' ? 'Startup Inclusiva' : 'Administrador';
+  }
+  localStorage.setItem('incluyet-session', JSON.stringify({ role: state.role, userName: state.userName }));
   if (role === 'candidate') navigate('candidate-home');
   else if (role === 'company') navigate('company-dashboard');
   else navigate('admin-panel');
 }
-function handleLogout() { state.role = null; navigate('landing'); }
+
+async function handleLogout() { 
+  if (window.supabaseClient) {
+    await window.supabaseClient.auth.signOut();
+  }
+  localStorage.removeItem('incluyet-session');
+  state.role = null; 
+  state.userName = null; 
+  navigate('landing'); 
+}
 
 function switchRegisterTab(tab) {
   ['candidate','company'].forEach(t => {
@@ -206,19 +278,19 @@ function toggleSidebar() {
 
 function buildSidebar() {
   const role = state.role;
-  const userName = role === 'candidate' ? 'María López' : role === 'company' ? 'Startup Inclusiva' : 'Administrador';
-  const roleLabel = role === 'candidate' ? 'Candidata' : role === 'company' ? 'Empresa' : 'Admin';
+  const userName = state.userName || 'Usuario';
+  const roleLabel = role === 'candidate' ? 'Candidata/o' : role === 'company' ? 'Empresa' : 'Admin';
 
   el('sidebar-user-name').textContent = userName;
   el('sidebar-user-role').textContent = roleLabel;
-  el('sidebar-user-avatar').textContent = userName.charAt(0);
+  el('sidebar-user-avatar').textContent = userName.charAt(0).toUpperCase();
 
   const candidateItems = [
     { view:'candidate-home', label:'Inicio', icon:'bi-house' },
     { view:'job-search', label:'Buscar ofertas', icon:'bi-search' },
     { view:'profile', label:'Mi perfil', icon:'bi-person' },
     { view:'applications', label:'Mis postulaciones', icon:'bi-file-text' },
-    { view:'messages', label:'Mensajes', icon:'bi-chat-square-text', badge:2 },
+    { view:'messages', label:'Mensajes', icon:'bi-chat-square-text' },
     { view:'resources', label:'Recursos', icon:'bi-book' },
   ];
   const companyItems = [
@@ -279,6 +351,20 @@ function navigate(view) {
     navigate('landing');
   }
   window.scrollTo(0,0);
+  
+  // A11y Focus Management
+  setTimeout(() => {
+    if (isApp) {
+      const title = el('app-page-title');
+      if (title) title.focus();
+    } else {
+      const firstHeading = document.querySelector(`#view-${view} h1`);
+      if (firstHeading) {
+        firstHeading.setAttribute('tabindex', '-1');
+        firstHeading.focus();
+      }
+    }
+  }, 50);
 }
 
 function renderAppView(view) {
@@ -298,17 +384,62 @@ function renderAppView(view) {
   if (renderers[view]) renderers[view]();
 }
 
-function viewJob(id) {
-  state.selectedJob = JOBS.find(j => j.id === id) || JOBS[0];
+
+window.viewJob = async function(id) {
+  // Fetch from Supabase
+  const { data: vacante, error } = await window.supabase.from('vacantes').select('*').eq('id', id).single();
+  if (vacante) {
+    state.selectedJob = {
+      id: vacante.id,
+      title: vacante.titulo,
+      company: 'Empresa Inclusiva', // Mocked if no relation
+      logo: 'EI',
+      location: 'Remoto',
+      type: vacante.modalidad,
+      posted: 'Hoy',
+      salary: 'No especificado',
+      a11y: vacante.etiquetas_accesibilidad || [],
+      tags: [],
+      description: vacante.descripcion || '',
+      requirements: ['Cumplir con el perfil']
+    };
+  } else {
+    // Fallback if not in DB yet (for UI testing)
+    state.selectedJob = JOBS.find(j => j.id === id) || JOBS[0] || {id: '10100000-0000-0000-0000-000000000101', title: 'Vacante de prueba', company: 'Prueba', a11y:[], tags:[], requirements:[], description:''};
+  }
+
+  // Verificar duplicados
+  let yaPostulado = false;
+  const { data: userData } = await window.supabase.auth.getUser();
+  if (userData?.user) {
+    const { data: postData } = await window.supabase.from('postulaciones')
+      .select('id')
+      .eq('candidato_id', userData.user.id)
+      .eq('vacante_id', state.selectedJob.id)
+      .single();
+    if (postData) {
+      yaPostulado = true;
+    }
+  }
+
+  if (yaPostulado) {
+    if (!state.appliedJobs.includes(state.selectedJob.id)) {
+      state.appliedJobs.push(state.selectedJob.id);
+    }
+  } else {
+    state.appliedJobs = state.appliedJobs.filter(jid => jid !== state.selectedJob.id);
+  }
+
   navigate('job-detail');
-}
+};
+
 
 // ─── Landing Dynamic ──────────────────────────────────────────────────────────
 function renderLandingDynamic() {
   // A11y chips
   const chips = el('landing-a11y-chips');
   if (chips) chips.innerHTML = A11Y_FEATURES.map(f =>
-    `<span class="a11y-filter-chip"><span>${f.emoji}</span> ${f.label}</span>`).join('');
+    `<span class="a11y-filter-chip"><i class="bi ${f.icon}" aria-hidden="true"></i> ${f.label}</span>`).join('');
 
   // Features grid
   const features = el('features-grid');
@@ -316,7 +447,7 @@ function renderLandingDynamic() {
     { icon:'bi-universal-access', title:'100% Accesible', desc:'Interfaz compatible con lectores de pantalla, alto contraste, tipografía ajustable y navegación por teclado.', color:'rgba(26,54,148,0.1)', tc:'#1a3694' },
     { icon:'bi-shield-check', title:'Empresas verificadas', desc:'Solo publicamos empresas que han firmado nuestro compromiso de inclusión y tienen políticas reales.', color:'rgba(229,91,20,0.1)', tc:'#e55b14' },
     { icon:'bi-heart', title:'Apoyo continuo', desc:'Guías, talleres y asesoría para prepararte para la búsqueda de empleo y negociar ajustes razonables.', color:'#dcfce7', tc:'#166534' },
-    { icon:'bi-funnel', title:'Filtros de accesibilidad', desc:'Busca por las características que necesitas: remoto, horario flexible, intérprete LSM, adaptaciones motoras y más.', color:'#f3e8ff', tc:'#7c3aed' },
+    { icon:'bi-funnel', title:'Filtros de accesibilidad', desc:'Busca por las características que necesitas: remoto, horario flexible, intérprete LSP, adaptaciones motoras y más.', color:'#f3e8ff', tc:'#7c3aed' },
     { icon:'bi-chat-square-text', title:'Comunicación directa', desc:'Habla con las empresas sin intermediarios. Coordina ajustes para entrevistas desde el primer mensaje.', color:'#ccfbf1', tc:'#0d9488' },
     { icon:'bi-graph-up', title:'Indicadores de inclusión', desc:'Las empresas publican sus métricas de diversidad para que puedas elegir con información real.', color:'#fef3c7', tc:'#d97706' },
   ].map(f => `
@@ -346,12 +477,13 @@ function renderLandingDynamic() {
 // ─── Candidate Home ───────────────────────────────────────────────────────────
 function renderCandidateHome() {
   const featured = JOBS.filter(j => j.featured);
+  const userName = state.userName || 'Usuario';
   el('view-candidate-home').innerHTML = `
     <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:24px;">
       <div class="greeting-card">
         <p style="color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:4px;">Hola de vuelta,</p>
-        <h2 style="font-family:'Lexend',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:8px;">María López 👋</h2>
-        <p style="color:rgba(255,255,255,0.8);font-size:0.875rem;margin-bottom:16px;">Tienes <strong>2 mensajes nuevos</strong> y <strong>1 entrevista</strong> programada esta semana.</p>
+        <h2 style="font-family:'Lexend',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:8px;">${userName}</h2>
+        <p style="color:rgba(255,255,255,0.8);font-size:0.875rem;margin-bottom:16px;">¡Qué bueno verte por aquí! Explora nuevas ofertas o revisa el estado de tus postulaciones.</p>
         <div class="d-flex flex-wrap gap-2">
           <button class="btn btn-accent-custom btn-sm d-flex align-items-center gap-2" onclick="navigate('job-search')"><i class="bi bi-search"></i> Buscar ofertas</button>
           <button class="btn" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;font-size:0.875rem;font-weight:600;" onclick="navigate('applications')">Ver mis postulaciones</button>
@@ -359,10 +491,10 @@ function renderCandidateHome() {
       </div>
       <div class="row g-3">
         ${[
-          { label:'Postulaciones', value:'5', icon:'bi-file-text', bg:'var(--secondary)', c:'var(--primary)' },
-          { label:'En proceso', value:'2', icon:'bi-clock', bg:'#fef3c7', c:'#92400e' },
-          { label:'Entrevistas', value:'1', icon:'bi-people', bg:'#dbeafe', c:'#1e40af' },
-          { label:'Contrataciones', value:'1', icon:'bi-award', bg:'#dcfce7', c:'#166534' },
+          { label:'Postulaciones', value: APPS_DATA.length.toString(), icon:'bi-file-text', bg:'var(--secondary)', c:'var(--primary)' },
+          { label:'En proceso', value: APPS_DATA.filter(a=>a.status!=='Descartado'&&a.status!=='Contratado').length.toString(), icon:'bi-clock', bg:'#fef3c7', c:'#92400e' },
+          { label:'Entrevistas', value: APPS_DATA.filter(a=>a.status==='Entrevista').length.toString(), icon:'bi-people', bg:'#dbeafe', c:'#1e40af' },
+          { label:'Contrataciones', value: APPS_DATA.filter(a=>a.status==='Contratado').length.toString(), icon:'bi-award', bg:'#dcfce7', c:'#166534' },
         ].map(s => `
           <div class="col-6 col-md-3">
             <div class="i-card-sm d-flex align-items-center gap-3">
@@ -384,6 +516,7 @@ function renderCandidateHome() {
           <button class="btn btn-ghost-primary btn-sm d-flex align-items-center gap-1" onclick="navigate('applications')">Ver todas <i class="bi bi-chevron-right"></i></button>
         </div>
         <div class="i-card-sm" style="padding:0;overflow:hidden;">
+          ${APPS_DATA.length === 0 ? '<p class="p-3 mb-0" style="font-size:0.875rem;color:var(--muted-fg);">Aún no te has postulado a ninguna oferta.</p>' : ''}
           ${APPS_DATA.slice(0,3).map((a,i) => `
             <div class="d-flex align-items-center gap-3 px-4 py-3 ${i<2?'border-bottom':''}">
               ${logoBadge(a.company.substring(0,2).toUpperCase(),'sm')}
@@ -422,7 +555,7 @@ function renderJobSearch() {
             <button class="filter-btn ${state.activeFilters.includes(f.id)?'active':''}"
               aria-pressed="${state.activeFilters.includes(f.id)}"
               onclick="toggleFilter('${f.id}')">
-              <span aria-hidden="true">${f.emoji}</span> ${f.label}
+              <i class="bi ${f.icon}" aria-hidden="true"></i> ${f.label}
               ${state.activeFilters.includes(f.id) ? '<i class="bi bi-check"></i>' : ''}
             </button>`).join('')}
         </div>
@@ -445,8 +578,18 @@ function renderJobResults() {
   const filtered = JOBS.filter(j => {
     const matchText = !q || j.title.toLowerCase().includes(q.toLowerCase()) || j.company.toLowerCase().includes(q.toLowerCase());
     const matchFilters = state.activeFilters.length === 0 || state.activeFilters.every(f => j.a11y.includes(f));
-    return matchText && matchFilters;
+    // Validación cruzada excluyente (ajustes razonables obligatorios del postulante vs vacante)
+    const matchMandatoryA11y = state.selectedA11y.length === 0 || state.selectedA11y.every(f => j.a11y.includes(f));
+    return matchText && matchFilters && matchMandatoryA11y;
   });
+  
+  if (state.sortBy === 'match') {
+    // Algoritmo de priorización por mérito técnico (simulado)
+    filtered.sort((a, b) => b.tags.length - a.tags.length);
+  } else if (state.sortBy === 'salary') {
+    // Ordenar por salario (simulado)
+    filtered.sort((a, b) => b.salary.localeCompare(a.salary));
+  }
   const hdr = el('job-results-header');
   const grid = el('job-results-grid');
   if (!hdr || !grid) return;
@@ -463,7 +606,7 @@ function renderJobDetail() {
   const job = state.selectedJob;
   const a11yAll = job.a11y.map(id => {
     const f = A11Y_FEATURES.find(x => x.id === id);
-    return f ? `<span style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;background:var(--card);border:1px solid rgba(26,54,148,0.3);font-size:0.875rem;font-weight:600;color:var(--primary);"><span>${f.emoji}</span>${f.label}</span>` : '';
+    return f ? `<span style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;background:var(--card);border:1px solid rgba(26,54,148,0.3);font-size:0.875rem;font-weight:600;color:var(--primary);"><i class="bi ${f.icon}" aria-hidden="true"></i>${f.label}</span>` : '';
   }).join('');
   el('view-job-detail').innerHTML = `
     <div style="max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:20px;">
@@ -506,9 +649,13 @@ function renderJobDetail() {
             </div>
             <div class="col-md-4 d-flex flex-column gap-3">
               <div id="apply-section">
-                <button class="btn btn-accent-custom w-100 d-flex align-items-center justify-content-center gap-2" style="height:48px;font-size:1rem;" onclick="applyToJob()">
-                  <i class="bi bi-send"></i> Postularme ahora
-                </button>
+                ${state.appliedJobs.includes(job.id) ? 
+                  `<button class="btn btn-secondary-custom w-100 d-flex align-items-center justify-content-center gap-2" style="height:48px;font-size:0.875rem;opacity:0.7;" disabled>Ya cuentas con una postulación activa para esta vacante</button>` 
+                  : 
+                  `<button class="btn btn-accent-custom w-100 d-flex align-items-center justify-content-center gap-2" style="height:48px;font-size:1rem;" onclick="openApplyModal()">
+                    <i class="bi bi-send"></i> Postularme ahora
+                  </button>`
+                }
               </div>
               <button class="btn btn-secondary-custom w-100 d-flex align-items-center justify-content-center gap-2">
                 <i class="bi bi-heart"></i> Guardar oferta
@@ -523,32 +670,284 @@ function renderJobDetail() {
       </div>
     </div>`;
 }
-function applyToJob() {
-  el('apply-section').innerHTML = `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;"><i class="bi bi-check-circle-fill" style="color:#16a34a;font-size:2.5rem;display:block;margin-bottom:8px;"></i><p style="font-family:'Lexend',sans-serif;font-weight:700;color:#166534;margin-bottom:4px;">¡Postulación enviada!</p><p style="font-size:0.75rem;color:#15803d;margin:0;">La empresa revisará tu perfil y te contactará si avanzas.</p></div>`;
-}
+
+
+let applyStep = 1;
+window.applyState = { cvFile: null, reqA11y: 'yes' };
+
+window.openApplyModal = function() {
+  applyStep = 1;
+  document.body.style.overflow = 'hidden';
+  renderApplyModal();
+};
+
+window.closeApplyModal = function() {
+  el('modal-root').innerHTML = '';
+  document.body.style.overflow = '';
+  el('app-page-title')?.focus();
+};
+
+window.renderApplyModal = async function() {
+  const root = el('modal-root');
+  let bodyContent = '';
+  let footerContent = '';
+  let title = 'Postulación: Paso ' + applyStep + ' de 3';
+  
+  // Paso 1: Perfil y Consentimiento
+  if (applyStep === 1) {
+    title = '1. Perfil y Consentimiento';
+    const { data: userData } = await window.supabase.auth.getUser();
+    const email = userData?.user?.email || 'usuario@correo.com';
+    const userName = userData?.user?.user_metadata?.full_name || state.userName || 'Usuario';
+    
+    bodyContent = `
+      <p style="color:var(--muted-fg);margin-bottom:16px;">Verifica tu información antes de enviarla a la empresa.</p>
+      <div class="i-card-sm" style="background:var(--muted-bg);margin-bottom:16px;">
+        <p style="font-weight:700;margin-bottom:4px;">${userName}</p>
+        <p style="font-size:0.875rem;color:var(--muted-fg);margin-bottom:8px;">${email}</p>
+      </div>
+      <div>
+        <label style="display:flex;align-items:start;gap:8px;font-size:0.875rem;cursor:pointer;">
+          <input type="checkbox" id="consent-a11y" style="margin-top:4px;" ${window.applyState.consent ? 'checked' : ''} onchange="window.applyState.consent = this.checked">
+          <span>Doy mi consentimiento para compartir mis requerimientos de accesibilidad con la empresa. <span style="color:var(--destructive);">*</span></span>
+        </label>
+        <div id="consent-error" style="color:var(--destructive);font-size:0.75rem;margin-top:4px;display:none;">Debes aceptar el consentimiento para continuar.</div>
+      </div>
+    `;
+    footerContent = `
+      <button onclick="closeApplyModal()" class="btn btn-secondary-custom">Cancelar</button>
+      <button onclick="if(el('consent-a11y').checked) { applyStep=2; renderApplyModal(); } else { el('consent-error').style.display='block'; }" class="btn btn-primary-custom">Continuar <i class="bi bi-chevron-right"></i></button>
+    `;
+  } 
+  // Paso 2: Ajustes y Carga de CV
+  else if (applyStep === 2) {
+    title = '2. CV y Ajustes Razonables';
+    bodyContent = `
+      <p style="color:var(--muted-fg);margin-bottom:16px;">Sube tu currículum y confirma tus adaptaciones.</p>
+      <div class="mb-4">
+        <label class="i-label" for="cv-upload">Currículum Vitae (.pdf o .docx, máx 5MB) <span style="color:var(--destructive);">*</span></label>
+        <input type="file" id="cv-upload" class="i-input" accept=".pdf,.docx" onchange="validateCV()" />
+        <div id="cv-error" style="color:var(--destructive);font-size:0.75rem;margin-top:4px;font-weight:600;" aria-live="polite"></div>
+      </div>
+      <div class="mb-3">
+        <label class="i-label">¿Requiere adaptaciones físicas o tecnológicas?</label>
+        <div class="d-flex flex-column gap-2">
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;cursor:pointer;">
+            <input type="radio" name="reqA11y" value="yes" ${window.applyState.reqA11y === 'yes' ? 'checked' : ''} onchange="window.applyState.reqA11y='yes'; el('a11y-options').style.opacity='1'; Array.from(el('a11y-options').querySelectorAll('input')).forEach(i=>i.disabled=false);">
+            Sí, requiero adaptaciones.
+          </label>
+          <div id="a11y-options" style="margin-left:24px; display:flex; flex-direction:column; gap:8px; opacity:${window.applyState.reqA11y === 'yes' ? '1' : '0.5'};">
+            <label style="font-size:0.875rem;"><input type="checkbox" class="a11y-chk" value="Lector de pantalla" ${window.applyState.reqA11y === 'no' ? 'disabled' : ''}> Lector de pantalla</label>
+            <label style="font-size:0.875rem;"><input type="checkbox" class="a11y-chk" value="Intérprete LSP" ${window.applyState.reqA11y === 'no' ? 'disabled' : ''}> Intérprete LSP</label>
+            <label style="font-size:0.875rem;"><input type="checkbox" class="a11y-chk" value="Rampa/Ascensor" ${window.applyState.reqA11y === 'no' ? 'disabled' : ''}> Rampa o ascensor</label>
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;cursor:pointer;">
+            <input type="radio" name="reqA11y" value="no" ${window.applyState.reqA11y === 'no' ? 'checked' : ''} onchange="window.applyState.reqA11y='no'; el('a11y-options').style.opacity='0.5'; Array.from(el('a11y-options').querySelectorAll('input')).forEach(i=>{i.checked=false; i.disabled=true;});">
+            No requiero ajustes adicionales.
+          </label>
+        </div>
+      </div>
+    `;
+    footerContent = `
+      <button onclick="applyStep=1;renderApplyModal()" class="btn btn-secondary-custom"><i class="bi bi-chevron-left"></i> Atrás</button>
+      <button onclick="if(validateCV(true)){ saveStep2(); applyStep=3; renderApplyModal(); }" class="btn btn-primary-custom">Continuar <i class="bi bi-chevron-right"></i></button>
+    `;
+    
+    setTimeout(() => {
+      if (window.applyState.cvFile && el('cv-upload')) {
+         // File input value can't be set for security reasons, we could show a label "Archivo seleccionado: X"
+         el('cv-error').textContent = 'Archivo pre-seleccionado: ' + window.applyState.cvFile.name;
+         el('cv-error').style.color = 'var(--primary)';
+      }
+    }, 50);
+  } 
+  // Paso 3: Confirmación y Envío
+  else if (applyStep === 3) {
+    title = '3. Confirmar Postulación';
+    bodyContent = `
+      <div class="text-center py-3">
+        <i class="bi bi-send" style="font-size:3rem;color:var(--primary);margin-bottom:16px;display:block;"></i>
+        <h3 style="font-family:'Lexend',sans-serif;font-weight:700;font-size:1.25rem;margin-bottom:8px;">¿Todo listo?</h3>
+        <p style="color:var(--muted-fg);font-size:0.875rem;">Estás a punto de postularte a la oferta <strong>${state.selectedJob.title}</strong> en <strong>${state.selectedJob.company}</strong>.</p>
+        <div id="apply-loading" style="display:none; margin-top:16px;">
+          <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Enviando...</span></div>
+          <p style="font-size:0.875rem; margin-top:8px;">Enviando postulación...</p>
+        </div>
+        <div id="apply-success-msg" style="display:none; color:#16a34a; font-weight:bold; margin-top:16px;" aria-live="polite"></div>
+      </div>
+    `;
+    footerContent = `
+      <button id="btn-back-3" onclick="applyStep=2;renderApplyModal()" class="btn btn-secondary-custom"><i class="bi bi-chevron-left"></i> Atrás</button>
+      <button id="btn-submit-3" onclick="finishApplication()" class="btn btn-accent-custom"><i class="bi bi-check-circle"></i> Confirmar y Enviar</button>
+    `;
+  }
+
+  root.innerHTML = `
+    <div class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" onclick="if(event.target===this)closeApplyModal()">
+      <div class="modal-content" style="max-width:500px;">
+        <div class="modal-header">
+          <h2 id="modal-title" style="font-family:'Lexend',sans-serif;font-size:1.125rem;margin:0;font-weight:700;">${title}</h2>
+          <button onclick="closeApplyModal()" class="modal-close-btn" aria-label="Cerrar modal"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="modal-body">${bodyContent}</div>
+        <div class="modal-footer">${footerContent}</div>
+      </div>
+    </div>
+  `;
+  
+  // Trap Focus
+  setTimeout(() => {
+    const focusable = root.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (focusable.length) {
+      focusable[0].focus();
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      root.onkeydown = function(e) {
+        if (e.key === 'Escape') {
+          closeApplyModal();
+          return;
+        }
+        if (e.key === 'Tab') {
+          if (e.shiftKey) {
+            if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+          } else {
+            if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+          }
+        }
+      };
+    }
+  }, 50);
+};
+
+window.saveStep2 = function() {
+  const fileInput = el('cv-upload');
+  if (fileInput && fileInput.files[0]) {
+    window.applyState.cvFile = fileInput.files[0];
+  }
+  const chks = document.querySelectorAll('.a11y-chk:checked');
+  window.applyState.ajustes = Array.from(chks).map(c => c.value);
+};
+
+window.validateCV = function(showErrorIfEmpty = false) {
+  const fileInput = el('cv-upload');
+  const errorEl = el('cv-error');
+  if (!fileInput || !errorEl) return false;
+  
+  const file = fileInput.files[0] || window.applyState.cvFile;
+  if (!file) {
+    if (showErrorIfEmpty) {
+       errorEl.textContent = 'Por favor, selecciona un archivo (PDF o DOCX).';
+       errorEl.style.color = 'var(--destructive)';
+    }
+    return false;
+  }
+  
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (ext !== 'pdf' && ext !== 'docx') {
+    errorEl.textContent = 'Error: Solo se permiten archivos PDF o DOCX.';
+    errorEl.style.color = 'var(--destructive)';
+    if (fileInput.files[0]) fileInput.value = ''; // Reset
+    window.applyState.cvFile = null;
+    return false;
+  }
+  
+  if (file.size > 5 * 1024 * 1024) {
+    errorEl.textContent = 'Error: El archivo excede el tamaño máximo permitido de 5 MB.';
+    errorEl.style.color = 'var(--destructive)';
+    if (fileInput.files[0]) fileInput.value = ''; // Reset
+    window.applyState.cvFile = null;
+    return false;
+  }
+  
+  errorEl.textContent = '';
+  return true;
+};
+
+window.finishApplication = async function() {
+  el('btn-submit-3').disabled = true;
+  el('btn-back-3').disabled = true;
+  el('apply-loading').style.display = 'block';
+
+  try {
+    const { data: userData } = await window.supabase.auth.getUser();
+    if (!userData?.user) throw new Error("Usuario no autenticado");
+    const uid = userData.user.id;
+
+    // 1. Subir CV al Storage
+    const file = window.applyState.cvFile;
+    const fileName = `${uid}/${Date.now()}_${file.name}`;
+    
+    const { data: uploadData, error: uploadError } = await window.supabase.storage
+      .from('cv-postulaciones')
+      .upload(fileName, file);
+
+    if (uploadError) throw uploadError;
+
+    const { data: publicUrlData } = window.supabase.storage
+      .from('cv-postulaciones')
+      .getPublicUrl(fileName);
+
+    // 2. Insertar en postulaciones
+    const ajustes = window.applyState.reqA11y === 'yes' ? window.applyState.ajustes : [];
+    
+    const { error: insertError } = await window.supabase.from('postulaciones')
+      .insert({
+        candidato_id: uid,
+        vacante_id: state.selectedJob.id,
+        ajustes_razonables: ajustes,
+        cv_url: publicUrlData.publicUrl,
+        estado: 'Enviada'
+      });
+      
+    if (insertError) {
+      if (insertError.code === '23505') throw new Error("Ya cuentas con una postulación activa para esta vacante");
+      throw insertError;
+    }
+
+    // Éxito
+    state.appliedJobs.push(state.selectedJob.id);
+    el('apply-loading').style.display = 'none';
+    const msg = el('apply-success-msg');
+    msg.style.display = 'block';
+    msg.textContent = '¡Postulación enviada con éxito!';
+    
+    setTimeout(() => {
+      closeApplyModal();
+      renderJobDetail(); // Re-render to show "Ya te has postulado"
+    }, 1500);
+
+  } catch (err) {
+    el('apply-loading').style.display = 'none';
+    el('btn-submit-3').disabled = false;
+    el('btn-back-3').disabled = false;
+    alert('Error al postular: ' + err.message);
+  }
+};
+
 
 // ─── Profile ──────────────────────────────────────────────────────────────────
 function renderProfile() {
+  const userName = state.userName || 'Usuario';
   el('view-profile').innerHTML = `
     <div style="max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:20px;">
       <div class="i-card-sm" style="padding:0;overflow:hidden;">
         <div class="profile-banner"></div>
         <div style="padding:0 28px 28px;">
           <div class="d-flex align-items-end justify-content-between" style="margin-top:-40px;margin-bottom:16px;">
-            <div style="width:80px;height:80px;border-radius:16px;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;border:4px solid var(--card);box-shadow:0 2px 8px rgba(0,0,0,0.1);font-family:'Lexend',sans-serif;">M</div>
+            <div style="width:80px;height:80px;border-radius:16px;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;border:4px solid var(--card);box-shadow:0 2px 8px rgba(0,0,0,0.1);font-family:'Lexend',sans-serif;">${userName.charAt(0).toUpperCase()}</div>
             <button id="edit-profile-btn" onclick="toggleProfileEdit()" class="btn btn-secondary-custom btn-sm d-flex align-items-center gap-2"><i class="bi bi-pencil"></i> Editar perfil</button>
           </div>
           <div id="profile-view-mode">
-            <h2 style="font-family:'Lexend',sans-serif;font-size:1.25rem;font-weight:700;margin-bottom:2px;">María López García</h2>
-            <p style="color:var(--muted-fg);font-size:0.875rem;margin-bottom:4px;">Analista de Datos · Diseñadora UX</p>
-            <p style="display:flex;align-items:center;gap:6px;font-size:0.875rem;color:var(--muted-fg);margin-bottom:12px;"><i class="bi bi-geo-alt"></i>Ciudad de México</p>
-            <p style="font-size:0.875rem;color:var(--muted-fg);line-height:1.7;margin:0;">Profesional con 4 años de experiencia en análisis de datos y diseño UX. Apasionada por la accesibilidad digital y los productos centrados en el usuario.</p>
+            <h2 style="font-family:'Lexend',sans-serif;font-size:1.25rem;font-weight:700;margin-bottom:2px;">${userName}</h2>
+            <p style="color:var(--muted-fg);font-size:0.875rem;margin-bottom:4px;">${state.profileTitle}</p>
+            <p style="display:flex;align-items:center;gap:6px;font-size:0.875rem;color:var(--muted-fg);margin-bottom:12px;"><i class="bi bi-geo-alt"></i>${state.profileCity}</p>
+            <p style="font-size:0.875rem;color:var(--muted-fg);line-height:1.7;margin:0;">${state.profileBio}</p>
           </div>
           <div id="profile-edit-mode" class="d-none">
-            <div class="row g-3 mb-3"><div class="col-6"><label class="i-label">Nombre completo</label><input type="text" class="i-input" value="María López García"/></div><div class="col-6"><label class="i-label">Título profesional</label><input type="text" class="i-input" value="Analista de Datos · Diseñadora UX"/></div></div>
-            <div class="mb-3"><label class="i-label">Ciudad</label><input type="text" class="i-input" value="Ciudad de México"/></div>
-            <div class="mb-3"><label class="i-label">Sobre mí</label><textarea class="i-input" rows="3">Profesional con 4 años de experiencia en análisis de datos y diseño UX. Apasionada por la accesibilidad digital y los productos centrados en el usuario.</textarea></div>
-            <button onclick="toggleProfileEdit()" class="btn btn-primary-custom d-flex align-items-center gap-2"><i class="bi bi-check"></i> Guardar cambios</button>
+            <div class="row g-3 mb-3"><div class="col-6"><label class="i-label">Nombre completo</label><input type="text" id="prof-name" class="i-input" value="${userName}"/></div><div class="col-6"><label class="i-label">Título profesional</label><input type="text" id="prof-title" class="i-input" value="${state.profileTitle}"/></div></div>
+            <div class="mb-3"><label class="i-label">Ciudad</label><input type="text" id="prof-city" class="i-input" value="${state.profileCity}"/></div>
+            <div class="mb-3"><label class="i-label">Sobre mí</label><textarea id="prof-bio" class="i-input" rows="3">${state.profileBio}</textarea></div>
+            <button onclick="saveProfile()" class="btn btn-primary-custom d-flex align-items-center gap-2"><i class="bi bi-check"></i> Guardar cambios</button>
           </div>
         </div>
       </div>
@@ -566,24 +965,34 @@ function renderProfile() {
       <div class="i-card-sm">
         <h3 style="font-family:'Lexend',sans-serif;font-weight:700;margin-bottom:16px;">Habilidades</h3>
         <div class="d-flex flex-wrap gap-2">
-          ${['SQL','Python','Power BI','Excel avanzado','Figma','UX Research','Accesibilidad WCAG','React'].map(s => `<span class="skill-tag">${s}</span>`).join('')}
+          <p style="font-size:0.875rem;color:var(--muted-fg);">Aún no has añadido habilidades.</p>
           <button class="border-dashed-btn">+ Añadir</button>
         </div>
       </div>
       <div class="i-card-sm">
         <h3 style="font-family:'Lexend',sans-serif;font-weight:700;margin-bottom:16px;">Documentos</h3>
         <div class="d-flex flex-column gap-2">
-          ${[{name:'CV_María_López_2026.pdf',size:'245 KB',date:'15 jun 2026'},{name:'Portafolio_UX.pdf',size:'3.2 MB',date:'10 jun 2026'}].map(d => `
-            <div class="doc-item">
-              <i class="bi bi-file-earmark-text" style="font-size:1.75rem;color:var(--primary);flex-shrink:0;"></i>
-              <div class="flex-grow-1 min-w-0"><p style="font-size:0.875rem;font-weight:600;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.name}</p><p style="font-size:0.75rem;color:var(--muted-fg);margin:0;">${d.size} · Subido ${d.date}</p></div>
-              <button class="icon-btn"><i class="bi bi-download"></i></button>
-            </div>`).join('')}
+          <p style="font-size:0.875rem;color:var(--muted-fg);">No hay documentos subidos.</p>
           <button class="btn btn-secondary-custom btn-sm d-flex align-items-center gap-2 mt-1" style="width:fit-content;"><i class="bi bi-plus-lg"></i> Subir documento</button>
         </div>
       </div>
     </div>`;
 }
+
+function saveProfile() {
+  state.userName = el('prof-name').value;
+  state.profileTitle = el('prof-title').value;
+  state.profileCity = el('prof-city').value;
+  state.profileBio = el('prof-bio').value;
+  
+  // Actualizar también en el menú lateral si existe
+  const sidebarName = el('sidebar-user-name');
+  if (sidebarName) sidebarName.textContent = state.userName;
+  
+  state.profileEditing = false;
+  renderProfile();
+}
+
 function toggleProfileEdit() {
   state.profileEditing = !state.profileEditing;
   el('profile-view-mode').classList.toggle('d-none', state.profileEditing);
@@ -596,10 +1005,10 @@ function renderApplications() {
   const statuses = ['all','En revisión','Entrevista programada','Contratado','No seleccionado','Postulado'];
   const summary = [
     { label:'Total', count: APPS_DATA.length, bg:'var(--secondary)', c:'var(--secondary-fg)' },
-    { label:'Contratado', count:1, bg:'#dcfce7', c:'#166534' },
-    { label:'Entrevista', count:1, bg:'#dbeafe', c:'#1e40af' },
-    { label:'En revisión', count:1, bg:'#fef3c7', c:'#92400e' },
-    { label:'Descartado', count:1, bg:'#fee2e2', c:'#991b1b' },
+    { label:'Contratado', count: APPS_DATA.filter(a=>a.status==='Contratado').length, bg:'#dcfce7', c:'#166534' },
+    { label:'Entrevista', count: APPS_DATA.filter(a=>a.status==='Entrevista programada'||a.status==='Entrevista').length, bg:'#dbeafe', c:'#1e40af' },
+    { label:'En revisión', count: APPS_DATA.filter(a=>a.status==='En revisión'||a.status==='Postulado').length, bg:'#fef3c7', c:'#92400e' },
+    { label:'Descartado', count: APPS_DATA.filter(a=>a.status==='No seleccionado'||a.status==='Descartado').length, bg:'#fee2e2', c:'#991b1b' },
   ];
   const filtered = state.appFilter === 'all' ? APPS_DATA : APPS_DATA.filter(a => a.status === state.appFilter);
 
@@ -635,6 +1044,18 @@ function setAppFilter(f) { state.appFilter = f; renderApplications(); }
 // ─── Messages ─────────────────────────────────────────────────────────────────
 function renderMessages() {
   const threads = state.msgThreads;
+  if (!threads || threads.length === 0) {
+    el('view-messages').innerHTML = `
+      <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:20px;">
+        <div class="i-card-sm text-center py-5">
+          <i class="bi bi-chat-square-text" style="font-size:3rem;color:var(--border);margin-bottom:16px;"></i>
+          <h3 style="font-family:'Lexend',sans-serif;font-weight:700;margin-bottom:8px;">Bandeja de entrada vacía</h3>
+          <p style="color:var(--muted-fg);font-size:0.875rem;margin:0;">Aún no tienes mensajes nuevos de las empresas.</p>
+        </div>
+      </div>`;
+    return;
+  }
+  
   const current = threads[state.activeMsg];
   el('view-messages').innerHTML = `
     <div class="messages-view">
@@ -696,12 +1117,12 @@ function scrollChatToBottom() {
 function renderResources() {
   const cats = ['Todos','Consejos','Legal','Guía práctica','Tecnología'];
   const resources = [
-    { id:1, title:'Cómo preparar tu CV inclusivo', cat:'Consejos', time:'5 min', emoji:'📄', desc:'Aprende a destacar tus fortalezas y habilidades de manera efectiva en tu currículum.' },
-    { id:2, title:'Derechos laborales de personas con discapacidad en México', cat:'Legal', time:'8 min', emoji:'⚖️', desc:'Conoce la Ley Federal del Trabajo y tus derechos en el ámbito laboral.' },
-    { id:3, title:'Cómo solicitar ajustes razonables en el trabajo', cat:'Guía práctica', time:'6 min', emoji:'🛠️', desc:'Guía paso a paso para comunicar tus necesidades de accesibilidad con tu empleador.' },
-    { id:4, title:'Entrevistas: consejos para personas con discapacidad', cat:'Consejos', time:'7 min', emoji:'💬', desc:'Estrategias para comunicar tu discapacidad y brillar en las entrevistas de trabajo.' },
-    { id:5, title:'Herramientas de accesibilidad digital para el trabajo', cat:'Tecnología', time:'10 min', emoji:'💻', desc:'Software, extensiones y configuraciones que pueden facilitar tu trabajo diario.' },
-    { id:6, title:'Empresas comprometidas con la inclusión: qué buscar', cat:'Guía práctica', time:'5 min', emoji:'🏢', desc:'Señales que indican si una empresa realmente tiene cultura de inclusión.' },
+    { id:1, title:'Cómo preparar tu CV inclusivo', cat:'Consejos', time:'5 min', icon:'bi-file-earmark-text', desc:'Aprende a destacar tus fortalezas y habilidades de manera efectiva en tu currículum.' },
+    { id:2, title:'Derechos laborales de personas con discapacidad en Perú', cat:'Legal', time:'8 min', icon:'bi-bank', desc:'Conoce la Ley General de la Persona con Discapacidad (Ley 29973) y tus derechos en el ámbito laboral.' },
+    { id:3, title:'Cómo solicitar ajustes razonables en el trabajo', cat:'Guía práctica', time:'6 min', icon:'bi-tools', desc:'Guía paso a paso para comunicar tus necesidades de accesibilidad con tu empleador.' },
+    { id:4, title:'Entrevistas: consejos para personas con discapacidad', cat:'Consejos', time:'7 min', icon:'bi-chat-square-text', desc:'Estrategias para comunicar tu discapacidad y brillar en las entrevistas de trabajo.' },
+    { id:5, title:'Herramientas de accesibilidad digital para el trabajo', cat:'Tecnología', time:'10 min', icon:'bi-laptop', desc:'Software, extensiones y configuraciones que pueden facilitar tu trabajo diario.' },
+    { id:6, title:'Empresas comprometidas con la inclusión: qué buscar', cat:'Guía práctica', time:'5 min', icon:'bi-building', desc:'Señales que indican si una empresa realmente tiene cultura de inclusión.' },
   ];
   const filtered = state.resourceCategory === 'Todos' ? resources : resources.filter(r => r.cat === state.resourceCategory);
 
@@ -721,7 +1142,7 @@ function renderResources() {
         ${filtered.map(r => `
           <div class="col-md-4">
             <div class="resource-card">
-              <div style="font-size:2rem;">${r.emoji}</div>
+              <div><i class="bi ${r.icon} fs-3" aria-hidden="true"></i></div>
               <div><span style="font-size:0.7rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;">${r.cat}</span><h3 style="font-family:'Lexend',sans-serif;font-weight:700;font-size:0.875rem;margin:4px 0 0;line-height:1.4;">${r.title}</h3></div>
               <p style="font-size:0.875rem;color:var(--muted-fg);line-height:1.6;flex:1;margin:0;">${r.desc}</p>
               <div class="d-flex align-items-center justify-content-between mt-auto pt-2">
@@ -736,67 +1157,78 @@ function renderResources() {
 function setResourceCat(c) { state.resourceCategory = c; renderResources(); }
 
 // ─── Company Dashboard ────────────────────────────────────────────────────────
-function renderCompanyDashboard() {
+
+window.renderCompanyDashboard = function() {
+  const userName = state.userName || 'Usuario';
   el('view-company-dashboard').innerHTML = `
     <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:20px;">
       <div class="greeting-card">
         <p style="color:rgba(255,255,255,0.7);font-size:0.875rem;margin:0;">Panel de empresa</p>
-        <h2 style="font-family:'Lexend',sans-serif;font-size:1.5rem;font-weight:700;margin:4px 0;">Startup Inclusiva</h2>
-        <p style="color:rgba(255,255,255,0.8);font-size:0.875rem;margin:0;">Cuenta verificada · Compromiso de inclusión firmado</p>
+        <h2 style="font-family:'Lexend',sans-serif;font-size:1.5rem;font-weight:700;margin:4px 0;">${userName}</h2>
       </div>
-      <div class="row g-3">
-        ${[
-          { label:'Ofertas activas', value:'4', icon:'bi-briefcase', delta:'+1 este mes', bg:'var(--secondary)', c:'var(--primary)' },
-          { label:'Postulantes totales', value:'137', icon:'bi-people', delta:'+41 este mes', bg:'rgba(229,91,20,0.1)', c:'var(--accent)' },
-          { label:'Contrataciones', value:'12', icon:'bi-person-check', delta:'+2 este mes', bg:'#dcfce7', c:'#166534' },
-          { label:'Tasa de inclusión', value:'78%', icon:'bi-heart', delta:'↑ 5% vs anterior', bg:'#f3e8ff', c:'#7c3aed' },
-        ].map(k => `
-          <div class="col-6 col-md-3">
-            <div class="i-card-sm">
-              <div class="kpi-icon mb-3" style="background:${k.bg};color:${k.c};"><i class="bi ${k.icon}"></i></div>
-              <p style="font-family:'Lexend',sans-serif;font-size:1.5rem;font-weight:700;margin:0;">${k.value}</p>
-              <p style="font-size:0.75rem;color:var(--muted-fg);margin:2px 0 0;">${k.label}</p>
-              <p class="delta-text">${k.delta}</p>
-            </div>
-          </div>`).join('')}
-      </div>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <div class="i-card-sm">
-            <h3 style="font-family:'Lexend',sans-serif;font-weight:700;margin-bottom:16px;">Postulantes por mes</h3>
-            <canvas id="company-chart" height="180"></canvas>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="i-card-sm">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <h3 style="font-family:'Lexend',sans-serif;font-weight:700;margin:0;">Postulantes recientes</h3>
-              <button class="btn btn-ghost-primary btn-sm d-flex align-items-center gap-1" onclick="navigate('company-applicants')">Ver todos <i class="bi bi-chevron-right"></i></button>
-            </div>
-            ${COMPANY_APPLICANTS.slice(0,4).map(ap => `
-              <div class="d-flex align-items-center gap-3 mb-3">
-                <div class="candidate-avatar">${ap.name.charAt(0)}</div>
-                <div class="flex-grow-1 min-w-0"><p style="font-size:0.875rem;font-weight:600;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${ap.name}</p><p style="font-size:0.75rem;color:var(--muted-fg);margin:0;">${ap.date}</p></div>
-                ${statusBadge(ap.status, ap.status==='Entrevista'?'blue':ap.status==='Descartado'?'red':'yellow')}
-              </div>`).join('')}
-          </div>
-        </div>
-      </div>
+      
       <div class="i-card-sm">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-          <h3 style="font-family:'Lexend',sans-serif;font-weight:700;margin:0;">Ofertas activas</h3>
-          <button class="btn btn-accent-custom btn-sm d-flex align-items-center gap-2" onclick="navigate('post-job')"><i class="bi bi-plus-lg"></i> Nueva oferta</button>
+        <h3 style="font-family:'Lexend',sans-serif;font-weight:700;margin-bottom:16px;">Postulantes en tiempo real (Realtime)</h3>
+        <div id="realtime-postulaciones-list" class="d-flex flex-column gap-2">
+          <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div>
         </div>
-        ${[{title:'Analista de Datos',apps:42,days:12,status:'Activa'},{title:'UX Designer Senior',apps:28,days:7,status:'Activa'},{title:'Frontend Developer',apps:67,days:3,status:'Destacada'}].map(j => `
-          <div class="d-flex align-items-center gap-3 p-2 rounded" style="transition:background 0.2s;" onmouseover="this.style.background='var(--muted-bg)'" onmouseout="this.style.background=''">
-            <div class="flex-grow-1"><p style="font-weight:600;font-size:0.875rem;margin:0;">${j.title}</p><p style="font-size:0.75rem;color:var(--muted-fg);margin:0;">${j.apps} postulantes · Hace ${j.days} días</p></div>
-            ${statusBadge(j.status,j.status==='Destacada'?'blue':'green')}
-            <button class="btn btn-ghost-custom btn-sm d-flex align-items-center gap-1">Ver <i class="bi bi-chevron-right"></i></button>
-          </div>`).join('')}
       </div>
     </div>`;
-  initBarChart('company-chart');
-}
+
+  loadRealtimePostulaciones();
+};
+
+window.loadRealtimePostulaciones = async function() {
+  const listEl = el('realtime-postulaciones-list');
+  
+  const renderItem = (p) => `
+    <div class="d-flex align-items-center gap-3 p-3 border rounded" id="post-${p.id}">
+      <div class="flex-grow-1">
+        <p style="font-weight:600;margin:0;">Vacante: ${p.vacante_id}</p>
+        <p style="font-size:0.875rem;color:var(--muted-fg);margin:0;">Candidato: ${p.candidato_id} | Ajustes: ${JSON.stringify(p.ajustes_razonables)}</p>
+        <a href="${p.cv_url}" target="_blank" style="font-size:0.75rem;">Ver CV</a>
+      </div>
+      <div>
+        <select class="form-select form-select-sm" ${p.estado === 'Cancelada' ? 'disabled' : ''} onchange="updatePostulacionEstado('${p.id}', this.value)">
+          <option value="Enviada" ${p.estado === 'Enviada' ? 'selected' : ''}>Enviada</option>
+          <option value="En Revisión" ${p.estado === 'En Revisión' ? 'selected' : ''}>En Revisión</option>
+          <option value="Preseleccionado" ${p.estado === 'Preseleccionado' ? 'selected' : ''}>Preseleccionado</option>
+          <option value="Entrevista" ${p.estado === 'Entrevista' ? 'selected' : ''}>Entrevista</option>
+          <option value="Cancelada" ${p.estado === 'Cancelada' ? 'selected' : ''}>Cancelada</option>
+        </select>
+      </div>
+    </div>
+  `;
+
+  try {
+    const { data, error } = await window.supabase.from('postulaciones').select('*').order('created_at', { ascending: false }).limit(10);
+    if (error) throw error;
+    
+    if (data.length === 0) {
+       listEl.innerHTML = '<p class="text-muted">No hay postulaciones aún.</p>';
+    } else {
+       listEl.innerHTML = data.map(renderItem).join('');
+    }
+    
+    // Subscribe to realtime
+    window.supabase.channel('postulaciones')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'postulaciones' }, payload => {
+        console.log('Realtime update:', payload);
+        // Reload list for simplicity
+        loadRealtimePostulaciones();
+      })
+      .subscribe();
+
+  } catch(err) {
+    listEl.innerHTML = '<p class="text-danger">Error al cargar postulaciones: ' + err.message + '</p>';
+  }
+};
+
+window.updatePostulacionEstado = async function(id, estado) {
+  const { error } = await window.supabase.from('postulaciones').update({ estado }).eq('id', id);
+  if (error) alert('Error al actualizar: ' + error.message);
+};
+
 
 // ─── Post Job ─────────────────────────────────────────────────────────────────
 function renderPostJob() {
@@ -817,7 +1249,7 @@ function renderPostJob() {
                   <div class="col-6"><label class="i-label">Tipo de empleo <span style="color:var(--destructive);">*</span></label><select class="i-input" required><option value="">Seleccionar</option><option>Tiempo completo</option><option>Medio tiempo</option><option>100% Remoto</option><option>Híbrido</option><option>Freelance</option></select></div>
                 </div>
                 <div class="row g-3 mb-3">
-                  <div class="col-6"><label class="i-label">Rango salarial (MXN/mes)</label><input type="text" class="i-input" placeholder="ej. $18,000 – $25,000"/></div>
+                  <div class="col-6"><label class="i-label">Rango salarial (PEN/mes)</label><input type="text" class="i-input" placeholder="ej. S/ 1,800 – S/ 2,500"/></div>
                   <div class="col-6"><label class="i-label">Categoría <span style="color:var(--destructive);">*</span></label><select class="i-input" required><option value="">Seleccionar</option><option>Tecnología</option><option>Diseño</option><option>Finanzas</option><option>Marketing</option><option>Atención al cliente</option></select></div>
                 </div>
                 <div class="mb-0"><label class="i-label">Descripción del puesto <span style="color:var(--destructive);">*</span></label><textarea class="i-input" rows="5" required placeholder="Describe las responsabilidades, el ambiente de trabajo y por qué tu empresa es un buen lugar para trabajar..."></textarea></div>
@@ -829,12 +1261,25 @@ function renderPostJob() {
                   ${A11Y_FEATURES.map(f => `
                     <div class="col-6 col-md-4">
                       <label class="a11y-check-card" id="a11y-check-${f.id}" onclick="toggleA11yCheck('${f.id}')">
-                        <input type="checkbox" style="display:none;"/>
-                        <span style="font-size:1.25rem;">${f.emoji}</span>
+                        <input type="checkbox" style="opacity:0;position:absolute;"/>
+                        <i class="bi ${f.icon} fs-5" aria-hidden="true"></i>
                         <span style="font-size:0.875rem;line-height:1.3;">${f.label}</span>
                       </label>
                     </div>`).join('')}
                 </div>
+              </div>
+              
+              <!-- Checklist Ley N 29973 Obligatorio -->
+              <div style="background:var(--muted-bg); border-radius:12px; padding:16px;">
+                <p style="font-size:0.875rem;font-weight:700;color:var(--primary);margin-bottom:12px;"><i class="bi bi-shield-check"></i> Checklist de Cumplimiento (Ley N° 29973)</p>
+                <label style="display:flex;gap:12px;align-items:flex-start;margin-bottom:8px;font-size:0.875rem;cursor:pointer;">
+                  <input type="checkbox" required style="margin-top:4px;" />
+                  <span>Confirmo que las instalaciones de la empresa cuentan con infraestructura accesible (rampas, ascensores, baños adaptados) o el rol permite teletrabajo al 100%.</span>
+                </label>
+                <label style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;cursor:pointer;">
+                  <input type="checkbox" required style="margin-top:4px;" />
+                  <span>Confirmo que la empresa está dispuesta a proveer los ajustes razonables tecnológicos (lectores de pantalla, teclados especiales) si el candidato seleccionado lo requiere.</span>
+                </label>
               </div>
               <div class="d-flex gap-3 pt-2" style="border-top:1px solid var(--border);">
                 <button type="button" onclick="navigate('company-dashboard')" class="btn btn-secondary-custom">Cancelar</button>
@@ -887,7 +1332,7 @@ function renderCompanyApplicants() {
                 <tr>
                   <td><div class="d-flex align-items-center gap-3"><div class="candidate-avatar">${ap.name.charAt(0)}</div><span style="font-weight:600;">${ap.name}</span></div></td>
                   <td style="color:var(--muted-fg);">${ap.date}</td>
-                  <td><span style="padding:4px 10px;border-radius:999px;font-size:0.75rem;background:var(--secondary);color:var(--secondary-fg);border:1px solid var(--border);">${ap.disability}</span></td>
+                  <td><span style="padding:4px 10px;border-radius:999px;font-size:0.75rem;background:var(--secondary);color:var(--secondary-fg);border:1px solid var(--border);">${ap.medicalConsent ? ap.disability : 'Requiere Ajustes'}</span></td>
                   <td><div class="d-flex align-items-center gap-2"><div class="score-bar"><div class="score-fill" style="width:${ap.score}%;"></div></div><span style="font-size:0.75rem;font-weight:700;">${ap.score}</span></div></td>
                   <td>${statusBadge(ap.status, ap.status==='Entrevista'?'blue':ap.status==='Descartado'?'red':'yellow')}</td>
                   <td><div class="d-flex gap-1"><button class="icon-btn" aria-label="Ver perfil"><i class="bi bi-eye"></i></button><button class="icon-btn" aria-label="Más opciones"><i class="bi bi-three-dots-vertical"></i></button></div></td>
@@ -918,12 +1363,12 @@ function renderAdminPanel() {
     <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:20px;">
       <div class="row g-3">
         ${[
-          { label:'Usuarios registrados', value:'1,842', icon:'bi-people', delta:'+124 este mes', bg:'var(--secondary)', c:'var(--primary)' },
-          { label:'Empresas verificadas', value:'134', icon:'bi-building', delta:'+8 este mes', bg:'rgba(229,91,20,0.1)', c:'var(--accent)' },
-          { label:'Ofertas activas', value:'289', icon:'bi-briefcase', delta:'+31 este mes', bg:'#dcfce7', c:'#166534' },
-          { label:'Postulaciones', value:'4,230', icon:'bi-file-text', delta:'+412 este mes', bg:'#dbeafe', c:'#1e40af' },
-          { label:'Tasa de inclusión', value:'78%', icon:'bi-heart', delta:'↑ 5% este mes', bg:'#f3e8ff', c:'#7c3aed' },
-          { label:'Contrataciones', value:'312', icon:'bi-person-check', delta:'+28 este mes', bg:'#fef3c7', c:'#d97706' },
+          { label:'Usuarios registrados', value: ADMIN_USERS.filter(u=>u.role!=='Empresa').length.toString(), icon:'bi-people', delta:'Dinámico', bg:'var(--secondary)', c:'var(--primary)' },
+          { label:'Empresas verificadas', value: ADMIN_USERS.filter(u=>u.role==='Empresa').length.toString(), icon:'bi-building', delta:'Dinámico', bg:'rgba(229,91,20,0.1)', c:'var(--accent)' },
+          { label:'Ofertas activas', value: JOBS.length.toString(), icon:'bi-briefcase', delta:'Dinámico', bg:'#dcfce7', c:'#166534' },
+          { label:'Postulaciones', value: APPS_DATA.length.toString(), icon:'bi-file-text', delta:'Dinámico', bg:'#dbeafe', c:'#1e40af' },
+          { label:'Tasa de inclusión', value:'Dinámico', icon:'bi-heart', delta:'N/A', bg:'#f3e8ff', c:'#7c3aed' },
+          { label:'Contrataciones', value: APPS_DATA.filter(a=>a.status==='Contratado').length.toString(), icon:'bi-person-check', delta:'Dinámico', bg:'#fef3c7', c:'#d97706' },
         ].map(k => `
           <div class="col-6 col-md-4">
             <div class="i-card-sm">
@@ -1014,6 +1459,99 @@ function initBarChart(canvasId) {
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
+async function loadAllDataFromSupabase() {
+  if (!window.supabaseClient) return;
+  try {
+    // 1. Cargar Ofertas (JOBS)
+    const { data: dbJobs, error: errJobs } = await window.supabaseClient
+      .from('jobs')
+      .select('*, companies(name, logo_url)');
+    if (!errJobs && dbJobs) {
+      JOBS = dbJobs.map(dbJob => ({
+        id: dbJob.id,
+        title: dbJob.title,
+        company: dbJob.companies?.name || 'Empresa Desconocida',
+        location: dbJob.location,
+        type: dbJob.type,
+        salary: dbJob.salary,
+        posted: new Date(dbJob.created_at).toLocaleDateString(),
+        tags: Array.isArray(dbJob.requirements) ? dbJob.requirements : (dbJob.requirements ? dbJob.requirements.split(',').map(s=>s.trim()) : []),
+        a11y: Array.isArray(dbJob.a11y) ? dbJob.a11y : (dbJob.a11y ? dbJob.a11y.split(',').map(s=>s.trim()) : []),
+        description: dbJob.description,
+        requirements: Array.isArray(dbJob.requirements) ? dbJob.requirements : (dbJob.requirements ? dbJob.requirements.split(',').map(s=>s.trim()) : []),
+        logo: dbJob.companies?.logo_url ? `<img src="${dbJob.companies.logo_url}" width="32" />` : (dbJob.companies?.name || 'UD').substring(0,2).toUpperCase(),
+        category: dbJob.category,
+        featured: false
+      }));
+      if (state.selectedJob && !JOBS.find(j => j.id === state.selectedJob.id)) {
+        state.selectedJob = JOBS[0] || null;
+      }
+    }
+
+    // 2. Cargar Postulaciones del Candidato (APPS_DATA) y de la Empresa (COMPANY_APPLICANTS)
+    const { data: dbApps, error: errApps } = await window.supabaseClient
+      .from('applications')
+      .select('*, jobs(title, companies(name)), profiles(full_name, title, bio)');
+    if (!errApps && dbApps) {
+      APPS_DATA = dbApps.map(a => ({
+        id: a.id,
+        job: a.jobs?.title || 'Vacante eliminada',
+        company: a.jobs?.companies?.name || 'UD',
+        date: new Date(a.created_at).toLocaleDateString(),
+        status: a.status || 'En revisión',
+        color: a.status === 'Contratado' ? 'green' : (a.status === 'Descartado' ? 'red' : 'yellow')
+      }));
+      COMPANY_APPLICANTS = dbApps.map(a => ({
+        id: a.id,
+        name: a.profiles?.full_name || 'Candidato Anónimo',
+        date: new Date(a.created_at).toLocaleDateString(),
+        status: a.status || 'En revisión',
+        disability: 'No especificado (Base de datos)',
+        score: Math.floor(Math.random() * 100),
+        medicalConsent: false
+      }));
+    }
+
+    // 3. Cargar Usuarios (ADMIN_USERS)
+    const { data: dbProfiles, error: errProfiles } = await window.supabaseClient.from('profiles').select('*');
+    if (!errProfiles && dbProfiles) {
+      ADMIN_USERS = dbProfiles.map(p => ({
+        id: p.id,
+        name: p.full_name || 'Sin nombre',
+        email: 'Oculto por privacidad',
+        role: p.title || 'Candidato',
+        status: 'Activo',
+        joined: new Date(p.updated_at || Date.now()).toLocaleDateString()
+      }));
+    }
+
+    // Actualizar vista actual si requiere repintado
+    renderAppView(state.view);
+
+  } catch (err) {
+    console.error('Error cargando datos de Supabase:', err);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  navigate('landing');
+  loadA11yState();
+  loadAllDataFromSupabase();
+  
+  const savedSession = localStorage.getItem('incluyet-session');
+  if (savedSession) {
+    try {
+      const parsed = JSON.parse(savedSession);
+      state.userName = parsed.userName;
+      handleLogin(parsed.role);
+    } catch(e) {
+      navigate('landing');
+    }
+  } else {
+    navigate('landing');
+  }
 });
+
+
+
+// Make all functions global for inline event handlers
+Object.assign(window, { el, show, hide, statusBadge, a11yBadge, logoBadge, jobCard, loadA11yState, saveA11yState, increaseFontSize, decreaseFontSize, applyFontSize, toggleHighContrast, applyHighContrast, toggleDyslexia, applyDyslexia, togglePassword, selectRole, handleLoginSubmit, handleRegisterSubmit, handleLogin, handleLogout, switchRegisterTab, toggleSidebar, buildSidebar, navigate, renderAppView, viewJob, renderLandingDynamic, renderCandidateHome, renderJobSearch, toggleFilter, clearFilters, renderJobResults, renderJobDetail, renderProfile, saveProfile, toggleProfileEdit, renderApplications, setAppFilter, renderMessages, selectMsg, sendMsg, scrollChatToBottom, renderResources, setResourceCat, renderCompanyDashboard, renderPostJob, toggleA11yCheck, submitPostJob, renderCompanyApplicants, setCompanyFilter, renderAdminPanel, renderAdminTabContent, setAdminTab, initBarChart, loadAllDataFromSupabase });

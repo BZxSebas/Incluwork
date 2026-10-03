@@ -6,16 +6,16 @@
   <title>InclúyeT – Empleo inclusivo</title>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800;900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
-  <!-- Bootstrap CSS 5 -->
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-  <!-- Custom CSS -->
+  <!-- Estilos personalizados -->
   <link href="css/styles.css" rel="stylesheet" />
 </head>
 <body>
 
-  <!-- ─── Accessibility Bar (always visible, fixed top 40px) ─────────── -->
+  <!-- Barra de accesibilidad -->
   <div id="a11y-bar" role="toolbar" aria-label="Barra de accesibilidad">
     <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
     <span class="a11y-label d-none d-sm-inline">Accesibilidad</span>
@@ -32,6 +32,12 @@
     </div>
 
     <div class="a11y-divider"></div>
+    <button id="dyslexia-btn" onclick="toggleDyslexia()" class="a11y-contrast-btn" aria-pressed="false" aria-label="Activar fuente para dislexia">
+      <i class="bi bi-fonts"></i>
+      <span class="d-none d-sm-inline">Dislexia</span>
+    </button>
+
+    <div class="a11y-divider"></div>
 
     <button id="high-contrast-btn" onclick="toggleHighContrast()" class="a11y-contrast-btn" aria-pressed="false" aria-label="Activar alto contraste">
       <i class="bi bi-eye"></i>
@@ -44,13 +50,13 @@
     </div>
   </div>
 
-  <!-- ─── Main Wrapper ──────────────────────────────────────────────────── -->
+  <!-- Contenedor principal -->
   <div id="main-wrapper">
 
-    <!-- ══════════════════════ LANDING PAGE ══════════════════════════════ -->
+    <!-- PÁGINA DE INICIO -->
     <div id="view-landing">
 
-      <!-- Landing Navigation -->
+      <!-- Navegación -->
       <header class="landing-nav sticky-top">
         <div class="container-xl">
           <button onclick="navigate('landing')" class="logo-btn">
@@ -69,13 +75,13 @@
         </div>
       </header>
 
-      <!-- Hero -->
+      <!-- Sección principal -->
       <section class="hero-section" aria-labelledby="hero-title">
         <div class="hero-bg-gradient" aria-hidden="true"></div>
         <div class="container-xl position-relative">
           <div class="row align-items-center g-5 py-2">
             <div class="col-md-6">
-              <div class="hero-chip mb-4"><span aria-hidden="true">✨</span> Plataforma 100% accesible</div>
+              <div class="hero-chip mb-4">Plataforma 100% accesible</div>
               <h1 id="hero-title" class="hero-title">
                 Tu talento merece un trabajo <span class="text-warning">sin barreras</span>
               </h1>
@@ -113,7 +119,7 @@
         </div>
       </section>
 
-      <!-- A11y chips showcase -->
+      <!-- Filtros de accesibilidad -->
       <section class="py-4" style="background:var(--card);border-bottom:1px solid var(--border);">
         <div class="container-xl">
           <p class="fw-bold mb-3" style="font-size:0.75rem;color:var(--muted-fg);text-transform:uppercase;letter-spacing:0.05em;">
@@ -123,7 +129,7 @@
         </div>
       </section>
 
-      <!-- Features -->
+      <!-- Características -->
       <section id="features" class="py-5" aria-labelledby="features-title">
         <div class="container-xl">
           <div class="text-center mb-5">
@@ -134,7 +140,7 @@
         </div>
       </section>
 
-      <!-- How it works -->
+      <!-- Cómo funciona -->
       <section class="py-5" style="background:var(--muted-bg);" aria-labelledby="how-title">
         <div class="container-xl">
           <h2 id="how-title" class="fw-bold text-center mb-5" style="font-family:'Lexend',sans-serif;">¿Cómo funciona?</h2>
@@ -142,7 +148,7 @@
         </div>
       </section>
 
-      <!-- CTA -->
+      <!-- Llamada a la acción -->
       <section class="py-5 text-center">
         <div class="container" style="max-width:600px;">
           <h2 class="fw-bold mb-3" style="font-family:'Lexend',sans-serif;">Empieza hoy, sin costo</h2>
@@ -153,7 +159,7 @@
         </div>
       </section>
 
-      <!-- Footer -->
+      <!-- Pie de página -->
       <footer class="py-4" style="background:var(--primary);color:white;">
         <div class="container-xl">
           <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
@@ -171,9 +177,9 @@
         </div>
       </footer>
     </div>
-    <!-- END LANDING -->
+    <!-- FIN PÁGINA DE INICIO -->
 
-    <!-- ══════════════════════ LOGIN PAGE ════════════════════════════════ -->
+    <!-- PÁGINA DE INICIO DE SESIÓN -->
     <div id="view-login" class="d-none">
       <header style="background:var(--card);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;padding:0 24px;">
         <button onclick="navigate('landing')" class="logo-btn">
@@ -187,7 +193,7 @@
             <h1 class="fw-bold mb-1" style="font-family:'Lexend',sans-serif;font-size:1.5rem;">Bienvenida/o de vuelta</h1>
             <p style="color:var(--muted-fg);font-size:0.875rem;margin-bottom:24px;">Inicia sesión para continuar con tu búsqueda.</p>
 
-            <!-- Role selector -->
+            <!-- Selector de rol -->
             <fieldset class="mb-4">
               <legend class="fw-semibold mb-2" style="font-size:0.875rem;">Iniciar sesión como</legend>
               <div class="row g-2">
@@ -241,9 +247,9 @@
         </div>
       </main>
     </div>
-    <!-- END LOGIN -->
+    <!-- FIN INICIO DE SESIÓN -->
 
-    <!-- ══════════════════════ REGISTER PAGE ════════════════════════════ -->
+    <!-- PÁGINA DE REGISTRO -->
     <div id="view-register" class="d-none">
       <header style="background:var(--card);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;gap:12px;padding:0 24px;">
         <button onclick="navigate('landing')" class="logo-btn">
@@ -258,7 +264,7 @@
             <h1 class="fw-bold mb-1" style="font-family:'Lexend',sans-serif;font-size:1.5rem;">Crear cuenta</h1>
             <p style="color:var(--muted-fg);font-size:0.875rem;margin-bottom:24px;">Elige tu tipo de cuenta para comenzar.</p>
 
-            <!-- Tab switcher -->
+            <!-- Pestañas de tipo de cuenta -->
             <div class="register-tabs mb-4" role="tablist">
               <button id="tab-candidate" role="tab" aria-selected="true" onclick="switchRegisterTab('candidate')" class="register-tab active">
                 <i class="bi bi-person"></i> Soy candidata/o
@@ -268,7 +274,7 @@
               </button>
             </div>
 
-            <!-- Candidate Form -->
+            <!-- Formulario candidato -->
             <form id="register-candidate-form" onsubmit="handleRegisterSubmit(event,'candidate')" class="d-flex flex-column gap-3">
               <div>
                 <label for="reg-name" class="i-label">Nombre completo <span style="color:var(--destructive);">*</span></label>
@@ -281,11 +287,11 @@
               <div class="row g-3">
                 <div class="col-6">
                   <label for="reg-phone" class="i-label">Teléfono</label>
-                  <input type="tel" id="reg-phone" class="i-input" placeholder="55 1234 5678" />
+                  <input type="tel" id="reg-phone" class="i-input" placeholder="987 654 321" />
                 </div>
                 <div class="col-6">
                   <label for="reg-city" class="i-label">Ciudad</label>
-                  <input type="text" id="reg-city" class="i-input" placeholder="Ciudad de México" />
+                  <input type="text" id="reg-city" class="i-input" placeholder="Lima" />
                 </div>
               </div>
               <div class="row g-3">
@@ -325,16 +331,16 @@
               </button>
             </form>
 
-            <!-- Company Form -->
+            <!-- Formulario empresa -->
             <form id="register-company-form" class="d-none d-flex flex-column gap-3" onsubmit="handleRegisterSubmit(event,'company')">
               <div>
                 <label for="comp-name" class="i-label">Nombre de la empresa <span style="color:var(--destructive);">*</span></label>
-                <input type="text" id="comp-name" class="i-input" placeholder="Mi Empresa SA de CV" required />
+                <input type="text" id="comp-name" class="i-input" placeholder="Mi Empresa S.A.C." required />
               </div>
               <div>
-                <label for="comp-rfc" class="i-label">RFC <span style="color:var(--destructive);">*</span></label>
+                <label for="comp-rfc" class="i-label">RUC <span style="color:var(--destructive);">*</span></label>
                 <p style="font-size:0.75rem;color:var(--muted-fg);margin-bottom:6px;">Necesario para verificación de cuenta empresarial</p>
-                <input type="text" id="comp-rfc" class="i-input" placeholder="ABC123456789" required />
+                <input type="text" id="comp-rfc" class="i-input" placeholder="20123456789" required />
               </div>
               <div>
                 <label for="comp-sector" class="i-label">Sector <span style="color:var(--destructive);">*</span></label>
@@ -374,12 +380,12 @@
         </div>
       </main>
     </div>
-    <!-- END REGISTER -->
+    <!-- FIN REGISTRO -->
 
-    <!-- ══════════════════════ APP CONTAINER ════════════════════════════ -->
+    <!-- CONTENEDOR DE LA APLICACIÓN -->
     <div id="app-container" class="d-none">
 
-      <!-- ── Sidebar ──────────────────────────────────────────────────── -->
+      <!-- Menú lateral -->
       <aside id="app-sidebar" aria-label="Navegación lateral">
         <div class="sidebar-header">
           <div class="d-flex align-items-center gap-2">
@@ -388,12 +394,12 @@
           </div>
         </div>
 
-        <!-- Nav items (rendered by JS) -->
+        <!-- Menús de navegación (generados por JS) -->
         <nav id="sidebar-nav-candidate" class="d-none" aria-label="Menú candidato"></nav>
         <nav id="sidebar-nav-company" class="d-none" aria-label="Menú empresa"></nav>
         <nav id="sidebar-nav-admin" class="d-none" aria-label="Menú administración"></nav>
 
-        <!-- User card -->
+        <!-- Tarjeta de usuario -->
         <div class="sidebar-user-card">
           <div class="d-flex align-items-center gap-3 mb-3">
             <div id="sidebar-user-avatar" class="sidebar-avatar">M</div>
@@ -408,22 +414,22 @@
         </div>
       </aside>
 
-      <!-- ── Main Area ────────────────────────────────────────────────── -->
+      <!-- Área principal -->
       <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;">
 
-        <!-- Top bar -->
+        <!-- Barra superior -->
         <header class="app-topbar">
           <button id="sidebar-toggle" onclick="toggleSidebar()" class="icon-btn" aria-label="Abrir/cerrar menú">
             <i class="bi bi-list fs-5"></i>
           </button>
-          <h1 id="app-page-title" class="fw-bold mb-0 flex-grow-1" style="font-family:'Lexend',sans-serif;font-size:1.125rem;">Inicio</h1>
+          <h1 id="app-page-title" class="fw-bold mb-0 flex-grow-1" style="font-family:'Lexend',sans-serif;font-size:1.125rem;" tabindex="-1">Inicio</h1>
           <button class="icon-btn position-relative" aria-label="Notificaciones">
             <i class="bi bi-bell fs-5"></i>
             <span class="notif-dot" aria-hidden="true"></span>
           </button>
         </header>
 
-        <!-- Page content -->
+        <!-- Contenido de páginas -->
         <main id="main-content" style="flex:1;overflow-y:auto;padding:24px;">
           <div id="view-candidate-home"    class="d-none"></div>
           <div id="view-job-search"        class="d-none"></div>
@@ -439,14 +445,16 @@
         </main>
       </div>
     </div>
-    <!-- END APP CONTAINER -->
+    <!-- FIN CONTENEDOR APLICACIÓN -->
 
   </div>
-  <!-- END MAIN WRAPPER -->
+  <!-- FIN CONTENEDOR PRINCIPAL -->
 
-  <!-- ─── Scripts ───────────────────────────────────────────────────────── -->
+  <div id="modal-root" aria-live="polite"></div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-  <script src="js/app.js"></script>
+  <script type="module" src="js/supabase.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
